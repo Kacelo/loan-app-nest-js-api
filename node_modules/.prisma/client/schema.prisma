@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model User {
+//   id                     String     @id @default(auto()) @map("_id") @db.ObjectId
+//   email                  String     @unique
+//   firstname              String?
+//   username               String?    @unique
+//   address                String?
+//   city                   String?
+//   state                  String?
+//   postalCode             String?
+//   phoneNumber            String?
+//   dateOfBirth            DateTime?
+//   identification         String?
+//   employerName           String?
+//   jobTitle               String?
+//   income                 String?
+//   bankAccount            String?
+//   creditScore            String?
+//   socialMedia            String?
+//   emergencyContactName   String?
+//   emergencyContactNumber String?
+//   preferences            String?
+//   loans                  Loan[]     @relation("Loaner")
+//   loansTaken             Loan[]     @relation("Loanee")
+//   documents              Document[] @relation("Loanee")
+//   createdAt              DateTime   @default(now())
+//   updatedAt              DateTime   @updatedAt
+//   deleted                Boolean    @default(false)
+//   UserRole               Role       @default(BORROWER)
+//   password               String? // Add this line if it doesn't exist
+// }
+model User {
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  email                  String    @unique
+  firstname              String?
+  username               String?   @unique
+  address                String?
+  city                   String?
+  state                  String?
+  postalCode             String?
+  phoneNumber            String?
+  dateOfBirth            String?
+  identification         String?
+  employerName           String?
+  jobTitle               String?
+  income                 String?
+  bankAccount            String?
+  creditScore            String?
+  socialMedia            String?
+  emergencyContactName   String?
+  emergencyContactNumber String?
+  preferences            String?
+  loans                  Loan[]    @relation("Loaner")
+  loansTaken             Loan[]    @relation("Loanee")
+  Document               Document[] @relation("Loanee")
+  UserRole               Role       @default(BORROWER)
+  password               String?
+  companyId              String?   @db.ObjectId
+  company                Company?  @relation("CompanyUsers", fields: [companyId], references: [id])
+}
+
+
+model Loan {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  loanerId           String
+  loaneeId           String
+  amount             String?
+  interestRate       String?
+  duration           Int?
+  startDate          DateTime?
+  endDate            DateTime?
+  status             String?
+  collateral         String?
+  repaymentSchedule  String?
+  latePaymentPenalty Float?
+  comments           String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deleted            Boolean   @default(false)
+  loaner             User      @relation("Loaner", fields: [loanerId], references: [id])
+  loanee             User      @relation("Loanee", fields: [loaneeId], references: [id])
+}
+
+model Document {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  loaneeId  String // Reference to the user who uploaded the document
+  fileType  String // Type of the document (e.g., ID, proof of income)
+  fileName  String // Original name of the uploaded file
+  filePath  String // Path to the stored file
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  loanee    User     @relation("Loanee", fields: [loaneeId], references: [id])
+}
+
+model Company {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String?
+  city        String?
+  state       String?
+  postalCode  String?
+  phoneNumber String?
+  email       String   @unique
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deleted     Boolean  @default(false)
+  users       User[]   @relation("CompanyUsers")
+}
+enum Role {
+  LENDER
+  ADMIN
+  BORROWER
+}
