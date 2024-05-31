@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 // import { UserModule } from './users/user.module';
 import { UsersModule } from './public/users/users.module';
 import { LoanModule } from './public/loans/loan.module';
-import { SearchModule } from './public/search/search.module';
+import { SearchModule } from './search/search.module';
 require('dotenv').config();
 
 const uri = process.env.DATABASE_URL;
