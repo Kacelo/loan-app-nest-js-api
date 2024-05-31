@@ -1,18 +1,19 @@
-import { Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { SearchService } from "./search.service";
-import { SearchUsersDto } from "./dto/searchUsersDto";
-import { Company, User as UserModel } from '@prisma/client';
+import { Controller, Get, Query } from '@nestjs/common';
+import { SearchService } from './search.service';
+import { User } from '@prisma/client';
 
-@Controller("search")
+@Controller('search')
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
-  @Post("/user/:query")
-  async search(@Param("query") query: string): Promise<UserModel[]> {
+  @Get('profiles')
+  async searchProfiles(@Query('query') query: string): Promise<User[]> {
     return this.searchService.searchProfiles(query);
   }
-  @Get("/company/:query")
-  async searchCompany(@Param("query") query: string): Promise<Company[]> {
-    return this.searchService.searchCompanies(query);
+
+  @Get('company')
+  async searchCompany(@Query('query') query: string): Promise<any> {
+    // Assuming you have a method in your SearchService to search companies
+    return this.searchService.searchCompany(query);
   }
 }

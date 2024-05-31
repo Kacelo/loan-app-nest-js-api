@@ -1,19 +1,18 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
-import { PrismaService } from "src/prisma.service";
-import { Company, User } from "@prisma/client";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
+
 @Injectable()
 export class SearchService {
   constructor(private prisma: PrismaService) {}
+
   async searchProfiles(query: string): Promise<User[]> {
     const profiles = await this.prisma.user.findMany({
       where: {
         OR: [
-          { username: { contains: query } },
-          { firstname: { contains: query } },
+          { username: { contains: query, mode: 'insensitive' } },
+          { firstname: { contains: query, mode: 'insensitive' } },
+          { email: { contains: query, mode: 'insensitive' } },
         ],
         AND: [
           {
@@ -24,32 +23,28 @@ export class SearchService {
         ],
       },
     });
-    if (!profiles) {
-      throw new NotFoundException("User not found");
+
+    if (profiles.length === 0) {
+      throw new NotFoundException('User not found');
     }
-    return profiles
-  }
-  async searchCompanies(query: string): Promise<Company[]>{
-    console.log(query)
 
-    const companyProfiles = await this.prisma.company.findMany({
-        where: {
-          OR: [
-            { name: { contains: query } },
-          ],
-          AND: [
-            {
-                name: {
-                not: null,
-              },
-            },
-          ],
+    return profiles;
+  }
+
+  async searchCompany(query: string): Promise<any[]> {
+    const companies = await this.prisma.company.findMany({
+      where: {
+        name: {
+          contains: query,
+          mode: 'insensitive',
         },
-      });
-      if (companyProfiles.length === 0) {
-        throw new NotFoundException('Company not found');
-      }
-      return companyProfiles
-  }
+      },
+    });
 
+    if (companies.length === 0) {
+      throw new NotFoundException('Company not found');
+    }
+
+    return companies;
+  }
 }
