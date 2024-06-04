@@ -40,7 +40,7 @@ export declare class LoanService {
         updatedAt: Date;
         deleted: boolean;
     }>;
-    deleteLoan(id: string, deleted: boolean): Promise<{
+    deleteLoan(id: string): Promise<{
         id: string;
         loanerId: string;
         loaneeId: string;
@@ -76,4 +76,5 @@ export declare class LoanService {
         updatedAt: Date;
         deleted: boolean;
     }[]>;
+    findLenderApplications(lenderId: string): Promise<any[]>;
 }

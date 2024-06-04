@@ -13,7 +13,7 @@ const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./public/users/users.module");
 const loan_module_1 = require("./public/loans/loan.module");
-const search_module_1 = require("./public/search/search.module");
+const search_module_1 = require("./search/search.module");
 require('dotenv').config();
 const uri = process.env.DATABASE_URL;
 let AppModule = class AppModule {
