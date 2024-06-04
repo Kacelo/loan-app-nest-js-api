@@ -14,23 +14,27 @@ const jwt_1 = require("@nestjs/jwt");
 const constants_1 = require("./constants");
 const auth_guard_1 = require("./auth.guard");
 const core_1 = require("@nestjs/core");
+const users_module_1 = require("../public/users/users.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            users_module_1.UsersModule,
             jwt_1.JwtModule.register({
                 global: true,
                 secret: constants_1.jwtConstants.secret,
                 signOptions: { expiresIn: '60s' },
             }),
         ],
-        providers: [{
+        providers: [
+            auth_service_1.AuthService,
+            {
                 provide: core_1.APP_GUARD,
                 useClass: auth_guard_1.AuthGuard,
-            },],
-        controllers: [auth_controller_1.AuthController],
+            },
+        ], controllers: [auth_controller_1.AuthController],
         exports: [auth_service_1.AuthService],
     })
 ], AuthModule);

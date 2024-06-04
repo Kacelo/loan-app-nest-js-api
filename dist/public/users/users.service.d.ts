@@ -1,16 +1,17 @@
-import { PrismaService } from 'src/prisma.service';
-import { CreateUserDto } from './dto/createUser.dto';
-import { User } from '@prisma/client';
-import { AuthUserDto } from './dto/authUser.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
-import { CreateCompanyDto } from '../companies/dto/createCompanyDto';
-import { UpdateCompanyDto } from '../companies/dto/updateCompanyDto';
-export declare class UserService {
+import { PrismaService } from "src/prisma.service";
+import { CreateUserDto } from "./dto/createUser.dto";
+import { User } from "@prisma/client";
+import { AuthUserDto } from "./dto/authUser.dto";
+import { UpdateUserDto } from "./dto/updateUser.dto";
+import { CreateCompanyDto } from "../companies/dto/createCompanyDto";
+import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
+export declare class UsersService {
     private prisma;
     constructor(prisma: PrismaService);
     createUser(data: CreateUserDto): Promise<User>;
     updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User>;
     getUserById(userId: string): Promise<AuthUserDto>;
+    findOne(username: string): Promise<AuthUserDto>;
     getAllUsers(): Promise<{
         id: string;
         email: string;

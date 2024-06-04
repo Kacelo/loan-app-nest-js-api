@@ -13,7 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { User as UserModel } from '@prisma/client';
-import { UserService } from './users.service';
+import { UsersService } from './users.service';
 import { encodePassword } from 'src/utils/bcrypt';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateCompanyDto } from '../companies/dto/updateCompanyDto';
@@ -21,7 +21,7 @@ import { CreateCompanyDto } from '../companies/dto/createCompanyDto';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Post()
   async signupUser(

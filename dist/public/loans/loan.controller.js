@@ -30,7 +30,7 @@ let LoanController = class LoanController {
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: Loan not created!',
+                message: "Error: Loan not created!",
                 error: err.message,
             });
         }
@@ -42,7 +42,7 @@ let LoanController = class LoanController {
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: Loan not updated!',
+                message: "Error: Loan not updated!",
                 error: err.message,
             });
         }
@@ -50,12 +50,12 @@ let LoanController = class LoanController {
     async deleteLoan(response, id, updateLoanDto) {
         try {
             const convertedId = updateLoanDto.deleted;
-            const updatedLoan = await this.loanService.deleteLoan(id, convertedId);
+            const updatedLoan = await this.loanService.deleteLoan(id);
             return response.status(common_1.HttpStatus.OK).json(updatedLoan);
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: Loan not updated!',
+                message: "Error: Loan not updated!",
                 error: err.message,
             });
         }
@@ -64,7 +64,19 @@ let LoanController = class LoanController {
         try {
             const loanData = await this.loanService.getAllLoans();
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'All loan data found successfullyy',
+                message: "All loan data found successfullyy",
+                loanData,
+            });
+        }
+        catch (err) {
+            return response.status(err.status).json(err.response);
+        }
+    }
+    async getLoanApplications(response, lenderId) {
+        try {
+            const loanData = await this.loanService.findLenderApplications(lenderId);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: "All loan data found successfullyy",
                 loanData,
             });
         }
@@ -75,7 +87,7 @@ let LoanController = class LoanController {
 };
 exports.LoanController = LoanController;
 __decorate([
-    (0, common_1.Post)('create'),
+    (0, common_1.Post)("create"),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -83,18 +95,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "createLoan", null);
 __decorate([
-    (0, common_1.Patch)('update/:id'),
+    (0, common_1.Patch)("update/:id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, updateLoanDto_1.UpdateLoanDto]),
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "updateLoan", null);
 __decorate([
-    (0, common_1.Patch)('delete/:id'),
+    (0, common_1.Patch)("delete/:id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, updateLoanDto_1.UpdateLoanDto]),
@@ -107,8 +119,16 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "getLoans", null);
+__decorate([
+    (0, common_1.Get)("applications/:lenderId"),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)("lenderId")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], LoanController.prototype, "getLoanApplications", null);
 exports.LoanController = LoanController = __decorate([
-    (0, common_1.Controller)('loans'),
+    (0, common_1.Controller)("loans"),
     __metadata("design:paramtypes", [loan_service_1.LoanService])
 ], LoanController);
 //# sourceMappingURL=loan.controller.js.map

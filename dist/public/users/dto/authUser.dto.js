@@ -28,4 +28,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], AuthUserDto.prototype, "username", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], AuthUserDto.prototype, "password", void 0);
 //# sourceMappingURL=authUser.dto.js.map

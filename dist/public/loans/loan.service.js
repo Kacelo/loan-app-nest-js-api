@@ -33,7 +33,7 @@ let LoanService = class LoanService {
             data: updateLoanDto,
         });
     }
-    async deleteLoan(id, deleted) {
+    async deleteLoan(id) {
         const existingLoan = await this.prisma.loan.findUnique({
             where: { id },
         });
@@ -42,7 +42,7 @@ let LoanService = class LoanService {
         }
         return await this.prisma.loan.update({
             where: { id },
-            data: { deleted },
+            data: { deleted: true },
         });
     }
     async getAllLoans() {
@@ -55,6 +55,17 @@ let LoanService = class LoanService {
             throw new common_1.NotFoundException('User not found');
         }
         return user;
+    }
+    async findLenderApplications(lenderId) {
+        const applications = await this.prisma.loan.findMany({
+            where: {
+                loanerId: lenderId
+            },
+        });
+        if (applications.length === 0) {
+            throw new common_1.NotFoundException('Company not found');
+        }
+        return applications;
     }
 };
 exports.LoanService = LoanService;

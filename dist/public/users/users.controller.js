@@ -184,6 +184,6 @@ __decorate([
 ], UsersController.prototype, "updateCompany", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [users_service_1.UserService])
+    __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map
