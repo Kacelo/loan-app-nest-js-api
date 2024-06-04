@@ -1,23 +1,23 @@
-import { UpdateLoanDto } from './../../loan-applications/dto/update-application-dto';
+import { UpdateLoanDto } from "./../../loan-applications/dto/update-application-dto";
 import {
   ConflictException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { CreateUserDto } from './dto/createUser.dto';
-import { encodePassword } from 'src/utils/bcrypt';
-import { User } from '@prisma/client';
-import { AuthUserDto } from './dto/authUser.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
-import { CreateCompanyDto } from '../companies/dto/createCompanyDto';
-import { UpdateCompanyDto } from '../companies/dto/updateCompanyDto';
+} from "@nestjs/common";
+import { PrismaService } from "src/prisma.service";
+import { CreateUserDto } from "./dto/createUser.dto";
+import { encodePassword } from "src/utils/bcrypt";
+import { User } from "@prisma/client";
+import { AuthUserDto } from "./dto/authUser.dto";
+import { UpdateUserDto } from "./dto/updateUser.dto";
+import { CreateCompanyDto } from "../companies/dto/createCompanyDto";
+import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private prisma: PrismaService) {}
   async createUser(data: CreateUserDto): Promise<User> {
-    console.log('using prisma');
+    console.log("using prisma");
     const existingUser = await this.prisma.user.findFirst({
       where: {
         email: data.email,
@@ -27,7 +27,7 @@ export class UserService {
       },
     });
     if (existingUser) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException("User already exists");
     }
 
     return await this.prisma.user.create({
@@ -42,22 +42,22 @@ export class UserService {
     });
 
     if (!existingUser) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     const updatedUser = await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
-    console.log('updated user:', updatedUser);
+    console.log("updated user:", updatedUser);
 
     if (!updatedUser) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return updatedUser;
   }
   async getUserById(userId: string) {
     if (!userId) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     const user = await this.prisma.user.findUnique({
       where: {
@@ -65,7 +65,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return new AuthUserDto({
       username: user.username,
@@ -73,10 +73,30 @@ export class UserService {
       id: user.id,
     });
   }
+  async findOne(username: string) {
+    if (!username) {
+      throw new NotFoundException("User not found");
+    }
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    return new AuthUserDto({
+      username: user.username,
+      email: user.email,
+      id: user.id,
+      password: user.password,
+    });
+  }
+
   async getAllUsers() {
     const user = await this.prisma.user.findMany();
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return user;
   }
@@ -90,7 +110,7 @@ export class UserService {
   async createCompany(userId: string, createCompanyDto: CreateCompanyDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
 
     const company = await this.prisma.company.create({
@@ -109,7 +129,7 @@ export class UserService {
       where: { id: companyId },
     });
     if (!company) {
-      throw new NotFoundException('Company not found');
+      throw new NotFoundException("Company not found");
     }
 
     return await this.prisma.company.update({
@@ -123,7 +143,7 @@ export class UserService {
     });
 
     if (!existingCompany) {
-      throw new NotFoundException('Loan not found');
+      throw new NotFoundException("Loan not found");
     }
 
     return await this.prisma.company.update({
@@ -138,11 +158,9 @@ export class UserService {
       },
     });
     if (!companies) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return companies;
   }
-  async searchCompany(name: string){
-    
-  }
+  async searchCompany(name: string) {}
 }

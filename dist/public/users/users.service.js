@@ -9,16 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma.service");
 const authUser_dto_1 = require("./dto/authUser.dto");
-let UserService = class UserService {
+let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
     async createUser(data) {
-        console.log('using prisma');
+        console.log("using prisma");
         const existingUser = await this.prisma.user.findFirst({
             where: {
                 email: data.email,
@@ -28,7 +28,7 @@ let UserService = class UserService {
             },
         });
         if (existingUser) {
-            throw new common_1.ConflictException('User already exists');
+            throw new common_1.ConflictException("User already exists");
         }
         return await this.prisma.user.create({
             data,
@@ -41,21 +41,21 @@ let UserService = class UserService {
             },
         });
         if (!existingUser) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         const updatedUser = await this.prisma.user.update({
             where: { id },
             data: updateUserDto,
         });
-        console.log('updated user:', updatedUser);
+        console.log("updated user:", updatedUser);
         if (!updatedUser) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return updatedUser;
     }
     async getUserById(userId) {
         if (!userId) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         const user = await this.prisma.user.findUnique({
             where: {
@@ -63,7 +63,7 @@ let UserService = class UserService {
             },
         });
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return new authUser_dto_1.AuthUserDto({
             username: user.username,
@@ -71,10 +71,29 @@ let UserService = class UserService {
             id: user.id,
         });
     }
+    async findOne(username) {
+        if (!username) {
+            throw new common_1.NotFoundException("User not found");
+        }
+        const user = await this.prisma.user.findUnique({
+            where: {
+                username: username,
+            },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException("User not found");
+        }
+        return new authUser_dto_1.AuthUserDto({
+            username: user.username,
+            email: user.email,
+            id: user.id,
+            password: user.password,
+        });
+    }
     async getAllUsers() {
         const user = await this.prisma.user.findMany();
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return user;
     }
@@ -88,7 +107,7 @@ let UserService = class UserService {
     async createCompany(userId, createCompanyDto) {
         const user = await this.prisma.user.findUnique({ where: { id: userId } });
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         const company = await this.prisma.company.create({
             data: createCompanyDto,
@@ -104,7 +123,7 @@ let UserService = class UserService {
             where: { id: companyId },
         });
         if (!company) {
-            throw new common_1.NotFoundException('Company not found');
+            throw new common_1.NotFoundException("Company not found");
         }
         return await this.prisma.company.update({
             where: { id: companyId },
@@ -116,7 +135,7 @@ let UserService = class UserService {
             where: { id },
         });
         if (!existingCompany) {
-            throw new common_1.NotFoundException('Loan not found');
+            throw new common_1.NotFoundException("Loan not found");
         }
         return await this.prisma.company.update({
             where: { id },
@@ -130,16 +149,15 @@ let UserService = class UserService {
             },
         });
         if (!companies) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return companies;
     }
-    async searchCompany(name) {
-    }
+    async searchCompany(name) { }
 };
-exports.UserService = UserService;
-exports.UserService = UserService = __decorate([
+exports.UsersService = UsersService;
+exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], UserService);
+], UsersService);
 //# sourceMappingURL=users.service.js.map

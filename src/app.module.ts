@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './public/users/users.module';
 import { LoanModule } from './public/loans/loan.module';
 import { SearchModule } from './search/search.module';
+import { AuthModule } from './auth/auth.module';
 require('dotenv').config();
 
 const uri = process.env.DATABASE_URL;
@@ -16,6 +17,7 @@ const uri = process.env.DATABASE_URL;
     LoanModule,
     UsersModule,
     SearchModule,
+    AuthModule,
     MongooseModule.forRoot(
       uri,
     ),

@@ -1,11 +1,11 @@
 import { User as UserModel } from '@prisma/client';
-import { UserService } from './users.service';
+import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateCompanyDto } from '../companies/dto/updateCompanyDto';
 import { CreateCompanyDto } from '../companies/dto/createCompanyDto';
 export declare class UsersController {
     private readonly userService;
-    constructor(userService: UserService);
+    constructor(userService: UsersService);
     signupUser(userData: {
         username: string;
         email: string;

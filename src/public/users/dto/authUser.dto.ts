@@ -12,4 +12,7 @@ export class AuthUserDto extends Dto<AuthUserDto> {
   @IsString()
   @IsOptional()
   username?: string;
+  @IsString()
+  @IsOptional()
+  password?: string;
 }
