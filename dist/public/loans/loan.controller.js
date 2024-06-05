@@ -18,6 +18,8 @@ const loan_service_1 = require("./loan.service");
 const createLoanDto_1 = require("./dto/createLoanDto");
 const updateLoanDto_1 = require("./dto/updateLoanDto");
 const mongoose_1 = require("mongoose");
+const roles_decorator_1 = require("../roles/roles.decorator");
+const role_enum_1 = require("../enums/role.enum");
 const { ObjectId } = mongoose_1.default.Types;
 let LoanController = class LoanController {
     constructor(loanService) {
@@ -88,6 +90,7 @@ let LoanController = class LoanController {
 exports.LoanController = LoanController;
 __decorate([
     (0, common_1.Post)("create"),
+    (0, roles_decorator_1.Roles)(role_enum_1.Role.User),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

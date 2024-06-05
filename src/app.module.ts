@@ -8,6 +8,7 @@ import { UsersModule } from './public/users/users.module';
 import { LoanModule } from './public/loans/loan.module';
 import { SearchModule } from './search/search.module';
 import { AuthModule } from './auth/auth.module';
+import { RolesModule } from './user-roles/roles.module';
 require('dotenv').config();
 
 const uri = process.env.DATABASE_URL;
@@ -18,6 +19,7 @@ const uri = process.env.DATABASE_URL;
     UsersModule,
     SearchModule,
     AuthModule,
+    RolesModule,
     MongooseModule.forRoot(
       uri,
     ),

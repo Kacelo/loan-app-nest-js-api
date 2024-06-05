@@ -59,7 +59,7 @@ let LoanService = class LoanService {
     async findLenderApplications(lenderId) {
         const applications = await this.prisma.loan.findMany({
             where: {
-                loanerId: lenderId
+                lenderId: lenderId
             },
         });
         if (applications.length === 0) {
