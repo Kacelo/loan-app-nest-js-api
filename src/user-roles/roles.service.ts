@@ -33,4 +33,11 @@ export class UserRolesService {
     }
     return role;
   }
+  async deleteRole(id: string): Promise<UserRole> {
+    return this.prisma.userRole.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
 }
