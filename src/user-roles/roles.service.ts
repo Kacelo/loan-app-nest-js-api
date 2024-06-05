@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { UserRole } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
-import { CreateUserRoleDto } from './dto/create-role-dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { UserRole } from "@prisma/client";
+import { PrismaService } from "src/prisma.service";
+import { CreateUserRoleDto } from "./dto/create-role-dto";
 
 @Injectable()
 export class UserRolesService {
@@ -11,5 +11,26 @@ export class UserRolesService {
     return this.prisma.userRole.create({
       data: createUserRoleDto,
     });
+  }
+  async getAllUserRoles() {
+    const roles = await this.prisma.userRole.findMany();
+    if (!roles) {
+      throw new NotFoundException("Roles not found");
+    }
+    return roles;
+  }
+  async getUserRoleById(roleId: string) {
+    if (!roleId) {
+      throw new NotFoundException("User not found");
+    }
+    const role = await this.prisma.userRole.findUnique({
+      where: {
+        id: roleId,
+      },
+    });
+    if (!role) {
+      throw new NotFoundException("User not found");
+    }
+    return role;
   }
 }
