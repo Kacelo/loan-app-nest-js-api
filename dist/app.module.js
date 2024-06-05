@@ -15,6 +15,8 @@ const users_module_1 = require("./public/users/users.module");
 const loan_module_1 = require("./public/loans/loan.module");
 const search_module_1 = require("./search/search.module");
 const auth_module_1 = require("./auth/auth.module");
+const roles_module_1 = require("./user-roles/roles.module");
+const mapped_user_roles_module_1 = require("./mapped-user-roles/mapped-user-roles.module");
 require('dotenv').config();
 const uri = process.env.DATABASE_URL;
 let AppModule = class AppModule {
@@ -27,6 +29,8 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             search_module_1.SearchModule,
             auth_module_1.AuthModule,
+            roles_module_1.RolesModule,
+            mapped_user_roles_module_1.MappedUserRoleModule,
             mongoose_1.MongooseModule.forRoot(uri),
         ],
         controllers: [app_controller_1.AppController],

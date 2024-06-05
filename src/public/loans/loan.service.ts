@@ -56,7 +56,7 @@ export class LoanService {
   async findLenderApplications(lenderId: string): Promise<any[]> {
     const applications = await this.prisma.loan.findMany({
       where: {
-        loanerId: lenderId
+        lenderId: lenderId
       },
     });
 

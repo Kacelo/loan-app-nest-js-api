@@ -18,12 +18,12 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateLoanDto.prototype, "loanerId", void 0);
+], CreateLoanDto.prototype, "lenderId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateLoanDto.prototype, "loaneeId", void 0);
+], CreateLoanDto.prototype, "borrowerId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),

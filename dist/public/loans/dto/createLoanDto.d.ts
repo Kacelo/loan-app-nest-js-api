@@ -1,6 +1,6 @@
 export declare class CreateLoanDto {
-    loanerId: string;
-    loaneeId: string;
+    lenderId: string;
+    borrowerId: string;
     amount?: string;
     interestRate?: string;
     duration?: number;

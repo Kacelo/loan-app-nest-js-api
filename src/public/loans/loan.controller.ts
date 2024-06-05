@@ -13,6 +13,8 @@ import { LoanService } from "./loan.service";
 import { CreateLoanDto } from "./dto/createLoanDto";
 import { UpdateLoanDto } from "./dto/updateLoanDto";
 import mongoose from "mongoose";
+import { Roles } from "../roles/roles.decorator";
+import { Role } from "../enums/role.enum";
 const { ObjectId } = mongoose.Types;
 
 @Controller("loans")
@@ -20,6 +22,7 @@ export class LoanController {
   constructor(private readonly loanService: LoanService) {}
 
   @Post("create")
+  @Roles(Role.User)
   async createLoan(@Res() response, @Body() createLoanDto: CreateLoanDto) {
     try {
       const newLoan = await this.loanService.createLoan(createLoanDto);

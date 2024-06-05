@@ -33,7 +33,10 @@ export declare class UsersService {
         emergencyContactName: string;
         emergencyContactNumber: string;
         preferences: string;
-        UserRole: import(".prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
+        deleted: boolean;
+        userRole: import(".prisma/client").$Enums.Role;
         password: string;
         companyId: string;
     }[]>;
@@ -82,8 +85,8 @@ export declare class UsersService {
     }>;
     getAllLoans(): Promise<{
         id: string;
-        loanerId: string;
-        loaneeId: string;
+        lenderId: string;
+        borrowerId: string;
         amount: string;
         interestRate: string;
         duration: number;

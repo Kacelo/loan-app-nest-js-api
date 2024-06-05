@@ -6,8 +6,8 @@ export declare class LoanService {
     constructor(prisma: PrismaService);
     createLoan(createLoanDto: CreateLoanDto): Promise<{
         id: string;
-        loanerId: string;
-        loaneeId: string;
+        lenderId: string;
+        borrowerId: string;
         amount: string;
         interestRate: string;
         duration: number;
@@ -24,8 +24,8 @@ export declare class LoanService {
     }>;
     updateLoan(id: string, updateLoanDto: UpdateLoanDto): Promise<{
         id: string;
-        loanerId: string;
-        loaneeId: string;
+        lenderId: string;
+        borrowerId: string;
         amount: string;
         interestRate: string;
         duration: number;
@@ -42,8 +42,8 @@ export declare class LoanService {
     }>;
     deleteLoan(id: string): Promise<{
         id: string;
-        loanerId: string;
-        loaneeId: string;
+        lenderId: string;
+        borrowerId: string;
         amount: string;
         interestRate: string;
         duration: number;
@@ -60,8 +60,8 @@ export declare class LoanService {
     }>;
     getAllLoans(): Promise<{
         id: string;
-        loanerId: string;
-        loaneeId: string;
+        lenderId: string;
+        borrowerId: string;
         amount: string;
         interestRate: string;
         duration: number;

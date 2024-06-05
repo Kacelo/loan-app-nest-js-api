@@ -1,14 +1,20 @@
-// create-loan.dto.ts
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDateString, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsDateString,
+  IsBoolean,
+} from 'class-validator';
 
 export class CreateLoanDto {
   @IsString()
   @IsNotEmpty()
-  loanerId: string;
+  lenderId: string;
 
   @IsString()
   @IsNotEmpty()
-  loaneeId: string;
+  borrowerId: string;
 
   @IsString()
   @IsOptional()
