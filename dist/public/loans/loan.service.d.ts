@@ -1,10 +1,9 @@
-import { PrismaService } from 'src/prisma.service';
-import { CreateLoanDto } from './dto/createLoanDto';
-import { UpdateLoanDto } from './dto/updateLoanDto';
+import { PrismaService } from "src/prisma.service";
+import { UpdateLoanDto } from "./dto/updateLoanDto";
 export declare class LoanService {
     private prisma;
     constructor(prisma: PrismaService);
-    createLoan(createLoanDto: CreateLoanDto): Promise<{
+    createLoan(createLoanDto: any): Promise<{
         id: string;
         lenderId: string;
         borrowerId: string;
@@ -21,6 +20,7 @@ export declare class LoanService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
+        repaymentScheduleId: string;
     }>;
     updateLoan(id: string, updateLoanDto: UpdateLoanDto): Promise<{
         id: string;
@@ -39,6 +39,7 @@ export declare class LoanService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
+        repaymentScheduleId: string;
     }>;
     deleteLoan(id: string): Promise<{
         id: string;
@@ -57,6 +58,7 @@ export declare class LoanService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
+        repaymentScheduleId: string;
     }>;
     getAllLoans(): Promise<{
         id: string;
@@ -75,6 +77,7 @@ export declare class LoanService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
+        repaymentScheduleId: string;
     }[]>;
     findLenderApplications(lenderId: string): Promise<any[]>;
 }

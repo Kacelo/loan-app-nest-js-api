@@ -1,14 +1,15 @@
 // loan.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { CreateLoanDto } from './dto/createLoanDto';
-import { UpdateLoanDto } from './dto/updateLoanDto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "src/prisma.service";
+import { CreateLoanDto } from "./dto/createLoanDto";
+import { UpdateLoanDto } from "./dto/updateLoanDto";
+import { Loan } from "@prisma/client";
 
 @Injectable()
 export class LoanService {
   constructor(private prisma: PrismaService) {}
 
-  async createLoan(createLoanDto: CreateLoanDto) {
+  async createLoan(createLoanDto: any) {
     return await this.prisma.loan.create({
       data: createLoanDto,
     });
@@ -20,7 +21,7 @@ export class LoanService {
     });
 
     if (!existingLoan) {
-      throw new NotFoundException('Loan not found');
+      throw new NotFoundException("Loan not found");
     }
 
     return await this.prisma.loan.update({
@@ -34,7 +35,7 @@ export class LoanService {
     });
 
     if (!existingLoan) {
-      throw new NotFoundException('Loan not found');
+      throw new NotFoundException("Loan not found");
     }
 
     return await this.prisma.loan.update({
@@ -49,19 +50,19 @@ export class LoanService {
       },
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return user;
   }
   async findLenderApplications(lenderId: string): Promise<any[]> {
     const applications = await this.prisma.loan.findMany({
       where: {
-        lenderId: lenderId
+        lenderId: lenderId,
       },
     });
 
     if (applications.length === 0) {
-      throw new NotFoundException('Company not found');
+      throw new NotFoundException("Company not found");
     }
 
     return applications;

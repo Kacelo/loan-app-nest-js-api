@@ -5,12 +5,12 @@ import {
   IsNumber,
   IsDateString,
   IsBoolean,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateLoanDto {
   @IsString()
   @IsNotEmpty()
-  lenderId: string;
+  lenderId?: string;
 
   @IsString()
   @IsNotEmpty()
@@ -26,7 +26,7 @@ export class CreateLoanDto {
 
   @IsNumber()
   @IsOptional()
-  duration?: number; // Duration in months, for example
+  duration?: number; // Duration in months
 
   @IsDateString()
   @IsOptional()
@@ -59,4 +59,7 @@ export class CreateLoanDto {
   @IsBoolean()
   @IsOptional()
   deleted?: boolean;
+  @IsString()
+  @IsOptional()
+  repaymentScheduleId?: string;
 }

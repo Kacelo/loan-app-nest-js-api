@@ -1,5 +1,5 @@
 export declare class CreateLoanDto {
-    lenderId: string;
+    lenderId?: string;
     borrowerId: string;
     amount?: string;
     interestRate?: string;
@@ -12,4 +12,5 @@ export declare class CreateLoanDto {
     latePaymentPenalty?: number;
     comments?: string;
     deleted?: boolean;
+    repaymentScheduleId?: string;
 }

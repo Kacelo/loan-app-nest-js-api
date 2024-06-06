@@ -100,6 +100,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
+        repaymentScheduleId: string;
     }[]>;
     searchCompany(name: string): Promise<void>;
 }
