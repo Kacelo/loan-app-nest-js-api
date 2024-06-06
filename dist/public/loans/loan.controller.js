@@ -20,6 +20,7 @@ const updateLoanDto_1 = require("./dto/updateLoanDto");
 const mongoose_1 = require("mongoose");
 const roles_decorator_1 = require("../roles/roles.decorator");
 const role_enum_1 = require("../enums/role.enum");
+const constants_1 = require("../../auth/constants");
 const { ObjectId } = mongoose_1.default.Types;
 let LoanController = class LoanController {
     constructor(loanService) {
@@ -28,7 +29,9 @@ let LoanController = class LoanController {
     async createLoan(response, createLoanDto) {
         try {
             const newLoan = await this.loanService.createLoan(createLoanDto);
-            return response.status(common_1.HttpStatus.CREATED).json(newLoan);
+            return response
+                .status(common_1.HttpStatus.CREATED)
+                .json({ newLoan, message: "Loan created successfully" });
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
@@ -40,7 +43,10 @@ let LoanController = class LoanController {
     async updateLoan(response, id, updateLoanDto) {
         try {
             const updatedLoan = await this.loanService.updateLoan(id, updateLoanDto);
-            return response.status(common_1.HttpStatus.OK).json(updatedLoan);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Loan status updated successfully',
+                updatedLoan,
+            });
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
@@ -89,6 +95,7 @@ let LoanController = class LoanController {
 };
 exports.LoanController = LoanController;
 __decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Post)("create"),
     (0, roles_decorator_1.Roles)(role_enum_1.Role.User),
     __param(0, (0, common_1.Res)()),
@@ -98,6 +105,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "createLoan", null);
 __decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Patch)("update/:id"),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)("id")),

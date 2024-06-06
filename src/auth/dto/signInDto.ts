@@ -9,3 +9,4 @@ export class SignInDto extends Dto<SignInDto> {
   @IsOptional()
   password?: string;
 }
+

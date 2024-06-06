@@ -34,16 +34,16 @@ model User {
   createdAt              DateTime          @default(now())
   updatedAt              DateTime          @updatedAt
   deleted                Boolean           @default(false)
-  userRole               Role              @default(BORROWER)
+  userRole               String?
   password               String?
   companyId              String?           @db.ObjectId
   company                Company?          @relation("CompanyUsers", fields: [companyId], references: [id])
 }
 
 model Loan {
-  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
-  lenderId           String     @db.ObjectId
-  borrowerId         String     @db.ObjectId
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  lenderId           String              @db.ObjectId
+  borrowerId         String              @db.ObjectId
   amount             String?
   interestRate       String?
   duration           Int?
@@ -54,12 +54,15 @@ model Loan {
   repaymentSchedule  String?
   latePaymentPenalty Float?
   comments           String?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-  deleted            Boolean    @default(false)
-  lender             User       @relation("Loaner", fields: [lenderId], references: [id])
-  borrower           User       @relation("Loanee", fields: [borrowerId], references: [id])
-  documents          Document[] @relation("LoanDocuments")
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  deleted            Boolean             @default(false)
+  lender             User                @relation("Loaner", fields: [lenderId], references: [id])
+  borrower           User                @relation("Loanee", fields: [borrowerId], references: [id])
+  documents          Document[]          @relation("LoanDocuments")
+  repaymentSchedules RepaymentSchedule[]
+
+  repaymentScheduleId String @db.ObjectId
 }
 
 model Document {
@@ -89,6 +92,18 @@ model Company {
   users       User[]   @relation("CompanyUsers")
 }
 
+model RepaymentSchedule {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  loanId      String   @db.ObjectId
+  paymentDate DateTime
+  amountDue   Float
+  amountPaid  Float    @default(0)
+  status      String // e.g., PENDING, PAID, LATE
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  loan        Loan?    @relation(fields: [loanId], references: [id])
+}
+
 model UserRole {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
   name            String
@@ -109,8 +124,8 @@ model MappedUserRoles {
   deleted   Boolean  @default(false)
 }
 
-enum Role {
-  LENDER
-  ADMIN
-  BORROWER
-}
+// enum Role {
+//   LENDER
+//   ADMIN
+//   BORROWER
+// }

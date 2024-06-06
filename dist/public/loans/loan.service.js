@@ -26,7 +26,7 @@ let LoanService = class LoanService {
             where: { id },
         });
         if (!existingLoan) {
-            throw new common_1.NotFoundException('Loan not found');
+            throw new common_1.NotFoundException("Loan not found");
         }
         return await this.prisma.loan.update({
             where: { id },
@@ -38,7 +38,7 @@ let LoanService = class LoanService {
             where: { id },
         });
         if (!existingLoan) {
-            throw new common_1.NotFoundException('Loan not found');
+            throw new common_1.NotFoundException("Loan not found");
         }
         return await this.prisma.loan.update({
             where: { id },
@@ -52,18 +52,18 @@ let LoanService = class LoanService {
             },
         });
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return user;
     }
     async findLenderApplications(lenderId) {
         const applications = await this.prisma.loan.findMany({
             where: {
-                lenderId: lenderId
+                lenderId: lenderId,
             },
         });
         if (applications.length === 0) {
-            throw new common_1.NotFoundException('Company not found');
+            throw new common_1.NotFoundException("Company not found");
         }
         return applications;
     }

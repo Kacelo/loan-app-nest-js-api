@@ -12,16 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma.service");
+const bcrypt_1 = require("../../utils/bcrypt");
 const authUser_dto_1 = require("./dto/authUser.dto");
 let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createUser(data) {
+    async createUser(createUserDto) {
         console.log("using prisma");
+        const { email, username, password, userRole } = createUserDto;
+        const hashedPassword = (0, bcrypt_1.encodePassword)(password);
         const existingUser = await this.prisma.user.findFirst({
             where: {
-                email: data.email,
+                email: email,
             },
             select: {
                 id: true,
@@ -30,9 +33,15 @@ let UsersService = class UsersService {
         if (existingUser) {
             throw new common_1.ConflictException("User already exists");
         }
-        return await this.prisma.user.create({
-            data,
+        const user = await this.prisma.user.create({
+            data: {
+                email,
+                username,
+                password: hashedPassword,
+                userRole: userRole || "BORROWER",
+            },
         });
+        return user;
     }
     async updateUser(id, updateUserDto) {
         const existingUser = await this.prisma.user.findUnique({
