@@ -34,7 +34,7 @@ model User {
   createdAt              DateTime          @default(now())
   updatedAt              DateTime          @updatedAt
   deleted                Boolean           @default(false)
-  userRole               Role              @default(BORROWER)
+  userRole               String?
   password               String?
   companyId              String?           @db.ObjectId
   company                Company?          @relation("CompanyUsers", fields: [companyId], references: [id])
@@ -109,8 +109,8 @@ model MappedUserRoles {
   deleted   Boolean  @default(false)
 }
 
-enum Role {
-  LENDER
-  ADMIN
-  BORROWER
-}
+// enum Role {
+//   LENDER
+//   ADMIN
+//   BORROWER
+// }

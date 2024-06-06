@@ -8,7 +8,7 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 export declare class UsersService {
     private prisma;
     constructor(prisma: PrismaService);
-    createUser(data: CreateUserDto): Promise<User>;
+    createUser(createUserDto: CreateUserDto): Promise<User>;
     updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User>;
     getUserById(userId: string): Promise<AuthUserDto>;
     findOne(username: string): Promise<AuthUserDto>;
@@ -36,7 +36,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
         deleted: boolean;
-        userRole: import(".prisma/client").$Enums.Role;
+        userRole: string;
         password: string;
         companyId: string;
     }[]>;

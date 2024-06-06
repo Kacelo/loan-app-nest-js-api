@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const constants_1 = require("./constants");
 const signInDto_1 = require("./dto/signInDto");
+const createUser_dto_1 = require("../public/users/dto/createUser.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -27,12 +28,27 @@ let AuthController = class AuthController {
     getProfile(req) {
         return req.user;
     }
+    async signUp(createUserDto, response) {
+        try {
+            const token = await this.authService.signUp(createUserDto);
+            return response.status(common_1.HttpStatus.CREATED).json({
+                message: 'User registered successfully',
+                token,
+            });
+        }
+        catch (error) {
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'User registration failed',
+                error: error.message,
+            });
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     (0, constants_1.Public)(),
-    (0, common_1.Post)('login'),
+    (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [signInDto_1.SignInDto]),
@@ -40,14 +56,23 @@ __decorate([
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, constants_1.Public)(),
-    (0, common_1.Get)('profile'),
+    (0, common_1.Get)("profile"),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getProfile", null);
+__decorate([
+    (0, constants_1.Public)(),
+    (0, common_1.Post)("signup"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [createUser_dto_1.CreateUserDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signUp", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
