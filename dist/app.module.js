@@ -19,7 +19,8 @@ const roles_module_1 = require("./user-roles/roles.module");
 const mapped_user_roles_module_1 = require("./mapped-user-roles/mapped-user-roles.module");
 const repayment_schedule_module_1 = require("./public/repayment-schedule/repayment-schedule.module");
 const company_module_1 = require("./public/companies/company.module");
-require('dotenv').config();
+const documents_module_1 = require("./public/documents/documents.module");
+require("dotenv").config();
 const uri = process.env.DATABASE_URL;
 let AppModule = class AppModule {
 };
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
             mapped_user_roles_module_1.MappedUserRoleModule,
             repayment_schedule_module_1.RepaymentScheduleModule,
             company_module_1.CompanyModule,
+            documents_module_1.DocumentsModule,
             mongoose_1.MongooseModule.forRoot(uri),
         ],
         controllers: [app_controller_1.AppController],

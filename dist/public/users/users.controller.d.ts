@@ -1,8 +1,8 @@
-import { User as UserModel } from '@prisma/client';
-import { UsersService } from './users.service';
-import { UpdateUserDto } from './dto/updateUser.dto';
-import { UpdateCompanyDto } from '../companies/dto/updateCompanyDto';
-import { CreateCompanyDto } from '../companies/dto/createCompanyDto';
+import { User as UserModel } from "@prisma/client";
+import { UsersService } from "./users.service";
+import { UpdateUserDto } from "./dto/updateUser.dto";
+import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
+import { CreateCompanyDto } from "../companies/dto/createCompanyDto";
 export declare class UsersController {
     private readonly userService;
     constructor(userService: UsersService);
