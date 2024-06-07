@@ -19,26 +19,27 @@ const bcrypt_1 = require("../../utils/bcrypt");
 const updateUser_dto_1 = require("./dto/updateUser.dto");
 const updateCompanyDto_1 = require("../companies/dto/updateCompanyDto");
 const createCompanyDto_1 = require("../companies/dto/createCompanyDto");
+const constants_1 = require("../../auth/constants");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
     }
     async signupUser(userData) {
         const password = (0, bcrypt_1.encodePassword)(userData.password);
-        console.log('encoded password', password);
+        console.log("encoded password", password);
         return this.userService.createUser({ ...userData, password });
     }
     async replaceUser(response, id, updateUserDto) {
         try {
             const existingUser = await this.userService.updateUser(id, updateUserDto);
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'user has been successfully updated',
+                message: "user has been successfully updated",
                 existingUser,
             });
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'user has not been successfully updated',
+                message: "user has not been successfully updated",
             });
         }
     }
@@ -46,7 +47,7 @@ let UsersController = class UsersController {
         try {
             const userData = await this.userService.getAllUsers();
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'All users data found successfullyy',
+                message: "All users data found successfullyy",
                 userData,
             });
         }
@@ -58,7 +59,7 @@ let UsersController = class UsersController {
         try {
             const existingUser = await this.userService.getUserById(id);
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'User found successfully',
+                message: "User found successfully",
                 existingUser,
             });
         }
@@ -70,7 +71,7 @@ let UsersController = class UsersController {
         try {
             const deletedUser = await this.userService.deleteUser(id);
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'User deleted successfully',
+                message: "User deleted successfully",
                 deletedUser,
             });
         }
@@ -85,7 +86,7 @@ let UsersController = class UsersController {
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: User not updated!',
+                message: "Error: User not updated!",
                 error: err.message,
             });
         }
@@ -97,7 +98,7 @@ let UsersController = class UsersController {
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: Company not created!',
+                message: "Error: Company not created!",
                 error: err.message,
             });
         }
@@ -109,7 +110,7 @@ let UsersController = class UsersController {
         }
         catch (err) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'Error: Company not updated!',
+                message: "Error: Company not updated!",
                 error: err.message,
             });
         }
@@ -124,9 +125,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "signupUser", null);
 __decorate([
-    (0, common_1.Post)('update/:id'),
+    (0, common_1.Post)("update/:id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, updateUser_dto_1.UpdateUserDto]),
@@ -140,50 +141,51 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsers", null);
 __decorate([
-    (0, common_1.Get)('/:id'),
+    (0, common_1.Get)("/:id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsersById", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUser", null);
 __decorate([
-    (0, common_1.Patch)('update/:id'),
+    (0, common_1.Patch)("update/:id"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, updateUser_dto_1.UpdateUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUser", null);
 __decorate([
-    (0, common_1.Post)('create-company/:userId'),
+    (0, constants_1.Public)(),
+    (0, common_1.Post)("create-company/:userId"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)("userId")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, createCompanyDto_1.CreateCompanyDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "createCompany", null);
 __decorate([
-    (0, common_1.Patch)('update-company/:companyId'),
+    (0, common_1.Patch)("update-company/:companyId"),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('companyId')),
+    __param(1, (0, common_1.Param)("companyId")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, updateCompanyDto_1.UpdateCompanyDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateCompany", null);
 exports.UsersController = UsersController = __decorate([
-    (0, common_1.Controller)('user'),
+    (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map
