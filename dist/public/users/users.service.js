@@ -163,6 +163,24 @@ let UsersService = class UsersService {
         return companies;
     }
     async searchCompany(name) { }
+    async assignRoleToUser(userId, roleId) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new common_1.NotFoundException("user not found");
+        }
+        const role = await this.prisma.userRole.findUnique({
+            where: { id: roleId },
+        });
+        if (!role) {
+            throw new common_1.NotFoundException("Role not found");
+        }
+        return this.prisma.mappedUserRoles.create({
+            data: {
+                userId,
+                roleId,
+            },
+        });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

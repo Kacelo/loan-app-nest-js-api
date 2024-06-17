@@ -97,7 +97,7 @@ exports.LoanController = LoanController;
 __decorate([
     (0, constants_1.Public)(),
     (0, common_1.Post)("create"),
-    (0, roles_decorator_1.Roles)(role_enum_1.Role.User),
+    (0, roles_decorator_1.Roles)(role_enum_1.Role.Borrower),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

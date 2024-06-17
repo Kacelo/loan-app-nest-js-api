@@ -19,6 +19,7 @@ import { UpdateUserDto } from "./dto/updateUser.dto";
 import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 import { CreateCompanyDto } from "../companies/dto/createCompanyDto";
 import { Public } from "src/auth/constants";
+import { Roles } from "../roles/roles.decorator";
 
 @Controller("user")
 export class UsersController {
@@ -140,5 +141,11 @@ export class UsersController {
         error: err.message,
       });
     }
+  }
+  @Public()
+  @Post(':id/assign-role')
+  // @Roles('ADMIN')
+  assignRole(@Param('id') userId: string, @Body('roleId') roleId: string) {
+    return this.userService.assignRoleToUser(userId, roleId);
   }
 }

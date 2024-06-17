@@ -103,4 +103,12 @@ export declare class UsersService {
         repaymentScheduleId: string;
     }[]>;
     searchCompany(name: string): Promise<void>;
+    assignRoleToUser(userId: string, roleId: string): Promise<{
+        id: string;
+        userId: string;
+        roleId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deleted: boolean;
+    }>;
 }

@@ -24,7 +24,7 @@ export class LoanController {
   constructor(private readonly loanService: LoanService) {}
   @Public()
   @Post("create")
-  @Roles(Role.User)
+  @Roles(Role.Borrower)
   async createLoan(@Res() response, @Body() createLoanDto: CreateLoanDto) {
     try {
       const newLoan = await this.loanService.createLoan(createLoanDto);

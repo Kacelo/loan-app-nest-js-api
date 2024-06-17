@@ -115,6 +115,9 @@ let UsersController = class UsersController {
             });
         }
     }
+    assignRole(userId, roleId) {
+        return this.userService.assignRoleToUser(userId, roleId);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -184,6 +187,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, updateCompanyDto_1.UpdateCompanyDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateCompany", null);
+__decorate([
+    (0, constants_1.Public)(),
+    (0, common_1.Post)(':id/assign-role'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('roleId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "assignRole", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [users_service_1.UsersService])
