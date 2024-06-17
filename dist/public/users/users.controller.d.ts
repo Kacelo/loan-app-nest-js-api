@@ -18,4 +18,12 @@ export declare class UsersController {
     updateUser(response: any, id: string, updateUserDto: UpdateUserDto): Promise<any>;
     createCompany(response: any, userId: string, createCompanyDto: CreateCompanyDto): Promise<any>;
     updateCompany(response: any, companyId: string, updateCompanyDto: UpdateCompanyDto): Promise<any>;
+    assignRole(userId: string, roleId: string): Promise<{
+        id: string;
+        userId: string;
+        roleId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deleted: boolean;
+    }>;
 }
