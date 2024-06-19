@@ -20,9 +20,9 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async signIn(username, pword) {
-        const hashedPassword = (0, bcrypt_1.encodePassword)(pword);
         const user = await this.usersService.findOne(username);
-        if (user?.password !== pword) {
+        const isMatch = (0, bcrypt_1.decodePassword)(pword, user?.password);
+        if (!isMatch) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
