@@ -15,6 +15,7 @@ const constants_1 = require("./constants");
 const auth_guard_1 = require("./auth.guard");
 const core_1 = require("@nestjs/core");
 const users_module_1 = require("../public/users/users.module");
+const resettoken_module_1 = require("../public/reset-tokens/resettoken.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -27,6 +28,7 @@ exports.AuthModule = AuthModule = __decorate([
                 secret: constants_1.jwtConstants.secret,
                 signOptions: { expiresIn: '60s' },
             }),
+            resettoken_module_1.PasswordResetModule
         ],
         providers: [
             auth_service_1.AuthService,

@@ -38,6 +38,7 @@ model User {
   password               String?
   companyId              String?           @db.ObjectId
   company                Company?          @relation("CompanyUsers", fields: [companyId], references: [id])
+  ResetTokens            ResetTokens[]
 }
 
 model Loan {
@@ -122,6 +123,16 @@ model MappedUserRoles {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deleted   Boolean  @default(false)
+}
+
+model ResetTokens {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  resetToken String
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deleted    Boolean  @default(false)
 }
 
 enum Role {
