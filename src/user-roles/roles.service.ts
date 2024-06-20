@@ -7,7 +7,7 @@ import { CreateUserRoleDto } from "./dto/create-role-dto";
 export class UserRolesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserRoleDto: CreateUserRoleDto): Promise<UserRole> {
+  async create(createUserRoleDto: any): Promise<UserRole> {
     return this.prisma.userRole.create({
       data: createUserRoleDto,
     });

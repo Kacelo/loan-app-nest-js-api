@@ -6,6 +6,7 @@ import { jwtConstants } from './constants';
 import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UsersModule } from 'src/public/users/users.module';
+import { PasswordResetModule } from 'src/public/reset-tokens/resettoken.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from 'src/public/users/users.module';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
+    PasswordResetModule
   ],
   providers: [
     AuthService,
