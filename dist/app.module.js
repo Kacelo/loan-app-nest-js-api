@@ -20,6 +20,7 @@ const mapped_user_roles_module_1 = require("./mapped-user-roles/mapped-user-role
 const repayment_schedule_module_1 = require("./public/repayment-schedule/repayment-schedule.module");
 const company_module_1 = require("./public/companies/company.module");
 const documents_module_1 = require("./public/documents/documents.module");
+const schedule_1 = require("@nestjs/schedule");
 require("dotenv").config();
 const uri = process.env.DATABASE_URL;
 let AppModule = class AppModule {
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             company_module_1.CompanyModule,
             documents_module_1.DocumentsModule,
             mongoose_1.MongooseModule.forRoot(uri),
+            schedule_1.ScheduleModule.forRoot()
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
