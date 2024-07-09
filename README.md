@@ -2,9 +2,11 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-# Loab App Backend 
+# Loan App Backend 
 
-(https://github.com/Kacelo/loan-app-nest-js-api/tree/feature/swagger-implementation) framework TypeScript starter repository.
+## Architecture Diagram
+![Architecture Diagram](/src/assets/diagram.png)
+
 ## Features 
 
 ### User Authentication and Authorization
