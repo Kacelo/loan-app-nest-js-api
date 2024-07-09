@@ -16,10 +16,13 @@ import mongoose from "mongoose";
 import { Roles } from "../roles/roles.decorator";
 import { Role } from "../enums/role.enum";
 import { Public } from "src/auth/constants";
+import { ApiTags } from "@nestjs/swagger";
+
 // import { Public } from "@prisma/client/runtime/library";
 const { ObjectId } = mongoose.Types;
 
 @Controller("loans")
+@ApiTags("loans")
 export class LoanController {
   constructor(private readonly loanService: LoanService) {}
   @Public()

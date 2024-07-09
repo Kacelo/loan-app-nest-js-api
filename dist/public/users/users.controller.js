@@ -20,6 +20,7 @@ const updateUser_dto_1 = require("./dto/updateUser.dto");
 const updateCompanyDto_1 = require("../companies/dto/updateCompanyDto");
 const createCompanyDto_1 = require("../companies/dto/createCompanyDto");
 const constants_1 = require("../../auth/constants");
+const swagger_1 = require("@nestjs/swagger");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
@@ -189,15 +190,16 @@ __decorate([
 ], UsersController.prototype, "updateCompany", null);
 __decorate([
     (0, constants_1.Public)(),
-    (0, common_1.Post)(':id/assign-role'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('roleId')),
+    (0, common_1.Post)(":id/assign-role"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)("roleId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "assignRole", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)("user"),
+    (0, swagger_1.ApiTags)("users"),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

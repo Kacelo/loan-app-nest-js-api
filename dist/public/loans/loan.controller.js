@@ -21,6 +21,7 @@ const mongoose_1 = require("mongoose");
 const roles_decorator_1 = require("../roles/roles.decorator");
 const role_enum_1 = require("../enums/role.enum");
 const constants_1 = require("../../auth/constants");
+const swagger_1 = require("@nestjs/swagger");
 const { ObjectId } = mongoose_1.default.Types;
 let LoanController = class LoanController {
     constructor(loanService) {
@@ -140,6 +141,7 @@ __decorate([
 ], LoanController.prototype, "getLoanApplications", null);
 exports.LoanController = LoanController = __decorate([
     (0, common_1.Controller)("loans"),
+    (0, swagger_1.ApiTags)("loans"),
     __metadata("design:paramtypes", [loan_service_1.LoanService])
 ], LoanController);
 //# sourceMappingURL=loan.controller.js.map

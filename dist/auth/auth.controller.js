@@ -18,6 +18,7 @@ const auth_service_1 = require("./auth.service");
 const constants_1 = require("./constants");
 const signInDto_1 = require("./dto/signInDto");
 const createUser_dto_1 = require("../public/users/dto/createUser.dto");
+const swagger_1 = require("@nestjs/swagger");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -32,13 +33,13 @@ let AuthController = class AuthController {
         try {
             const token = await this.authService.signUp(createUserDto);
             return response.status(common_1.HttpStatus.CREATED).json({
-                message: 'User registered successfully',
+                message: "User registered successfully",
                 token,
             });
         }
         catch (error) {
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                message: 'User registration failed',
+                message: "User registration failed",
                 error: error.message,
             });
         }
@@ -73,6 +74,7 @@ __decorate([
 ], AuthController.prototype, "signUp", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)("auth"),
+    (0, swagger_1.ApiTags)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

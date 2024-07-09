@@ -20,8 +20,10 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 import { CreateCompanyDto } from "../companies/dto/createCompanyDto";
 import { Public } from "src/auth/constants";
 import { Roles } from "../roles/roles.decorator";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller("user")
+@ApiTags("users")
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
@@ -143,9 +145,9 @@ export class UsersController {
     }
   }
   @Public()
-  @Post(':id/assign-role')
+  @Post(":id/assign-role")
   // @Roles('ADMIN')
-  assignRole(@Param('id') userId: string, @Body('roleId') roleId: string) {
+  assignRole(@Param("id") userId: string, @Body("roleId") roleId: string) {
     return this.userService.assignRoleToUser(userId, roleId);
   }
 }
