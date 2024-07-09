@@ -2,11 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const common_1 = require("@nestjs/common");
+const constants_1 = require("./constants");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
+    app
+        .enableVersioning({
+        type: common_1.VersioningType.URI,
+        defaultVersion: '1',
+    })
+        .setGlobalPrefix(constants_1.API_PREFIX);
     const config = new swagger_1.DocumentBuilder()
         .setTitle("Loan Management API")
         .setDescription("API for managing loan applications, user profiles, and company profiles in a micro-lending platform. This API supports user authentication, loan application processing, document management, and company profile management.")

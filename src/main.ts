@@ -1,11 +1,19 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+
+import { API_PREFIX } from './constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app
+    .enableVersioning({
+      type: VersioningType.URI,
+      defaultVersion: '1',
+    })
+    .setGlobalPrefix(API_PREFIX);
   const config = new DocumentBuilder()
     .setTitle("Loan Management API")
     .setDescription(
@@ -26,7 +34,7 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
+  SwaggerModule.setup(`${API_PREFIX}/:version/docs`, app, document);
 
   await app.listen(3000);
 }
