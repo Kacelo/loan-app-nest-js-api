@@ -107,7 +107,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - [Vernon Kacelo](https://twitter.com/kammysliwiec)
+- Author - [Vernon Kacelo](mailto:vernonkachelo@gmail.com)
 
 ## Credits 
 This API is built and maintained solely by Vernon Kacelo. Special thanks to the developers of the libraries and frameworks used in this project.
