@@ -19,29 +19,34 @@ let UsersService = class UsersService {
         this.prisma = prisma;
     }
     async createUser(createUserDto) {
-        console.log("using prisma");
-        const { email, username, password, userRole } = createUserDto;
-        const hashedPassword = (0, bcrypt_1.encodePassword)(password);
-        const existingUser = await this.prisma.user.findFirst({
-            where: {
-                email: email,
-            },
-            select: {
-                id: true,
-            },
-        });
-        if (existingUser) {
-            throw new common_1.ConflictException("User already exists");
+        try {
+            console.log("using prisma");
+            const { email, username, password, userRole } = createUserDto;
+            const hashedPassword = (0, bcrypt_1.encodePassword)(password);
+            const existingUser = await this.prisma.user.findFirst({
+                where: {
+                    email: email,
+                },
+                select: {
+                    id: true,
+                },
+            });
+            if (existingUser) {
+                throw new common_1.ConflictException("User already exists");
+            }
+            const user = await this.prisma.user.create({
+                data: {
+                    email: email,
+                    username: username,
+                    password: hashedPassword,
+                    userRole: userRole || "BORROWER",
+                },
+            });
+            return user;
         }
-        const user = await this.prisma.user.create({
-            data: {
-                email,
-                username,
-                password: hashedPassword,
-                userRole: userRole || "BORROWER",
-            },
-        });
-        return user;
+        catch (error) {
+            console.log('user create failed', error);
+        }
     }
     async updateUser(id, updateUserDto) {
         const existingUser = await this.prisma.user.findUnique({

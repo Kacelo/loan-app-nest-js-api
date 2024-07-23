@@ -18,7 +18,6 @@ const auth_module_1 = require("./auth/auth.module");
 const roles_module_1 = require("./user-roles/roles.module");
 const mapped_user_roles_module_1 = require("./mapped-user-roles/mapped-user-roles.module");
 const repayment_schedule_module_1 = require("./public/repayment-schedule/repayment-schedule.module");
-const company_module_1 = require("./public/companies/company.module");
 const documents_module_1 = require("./public/documents/documents.module");
 const schedule_1 = require("@nestjs/schedule");
 require("dotenv").config();
@@ -36,7 +35,6 @@ exports.AppModule = AppModule = __decorate([
             roles_module_1.RolesModule,
             mapped_user_roles_module_1.MappedUserRoleModule,
             repayment_schedule_module_1.RepaymentScheduleModule,
-            company_module_1.CompanyModule,
             documents_module_1.DocumentsModule,
             mongoose_1.MongooseModule.forRoot(uri),
             schedule_1.ScheduleModule.forRoot()

@@ -33,6 +33,7 @@ let AuthService = class AuthService {
     async signUp(createUserDto) {
         const { email, username, password, userRole } = createUserDto;
         const hashedPassword = (0, bcrypt_1.encodePassword)(password);
+        console.log(createUserDto);
         const user = await this.usersService.createUser(createUserDto);
         const payload = {
             username: user.username,

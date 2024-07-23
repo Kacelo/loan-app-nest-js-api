@@ -2,6 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+const cors = require('cors');
 
 import { API_PREFIX } from './constants';
 
@@ -35,7 +36,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${API_PREFIX}/:version/docs`, app, document);
-
+  app.use(cors());
   await app.listen(3000);
 }
 bootstrap();
