@@ -17,30 +17,35 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    console.log("using prisma");
-    const { email, username, password, userRole } = createUserDto;
-    const hashedPassword = encodePassword(password);
-    const existingUser = await this.prisma.user.findFirst({
-      where: {
-        email: email,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (existingUser) {
-      throw new ConflictException("User already exists");
+    try {
+      console.log("using prisma");
+      const { email, username, password, userRole } = createUserDto;
+      const hashedPassword = encodePassword(password);
+      const existingUser = await this.prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+        select: {
+          id: true,
+        },
+      });
+  
+      if (existingUser) {
+        throw new ConflictException("User already exists");
+      }
+      const user = await this.prisma.user.create({
+        data: {
+          email:email,
+          username:username,
+          password: hashedPassword,
+          userRole: userRole || "BORROWER", // Default role is 'BORROWER'
+        },
+      });
+      return user;
+    } catch (error) {
+      console.log('user create failed', error)
     }
-    const user = await this.prisma.user.create({
-      data: {
-        email,
-        username,
-        password: hashedPassword,
-        userRole: userRole || "BORROWER", // Default role is 'BORROWER'
-      },
-    });
-    return user;
+   
   }
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const existingUser = await this.prisma.user.findUnique({
