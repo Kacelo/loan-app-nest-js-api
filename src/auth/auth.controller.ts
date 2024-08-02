@@ -23,8 +23,22 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post("login")
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async signIn(@Body() signInDto: SignInDto, @Res() response) {
+    try {
+      const token = await this.authService.signIn(
+        signInDto.username,
+        signInDto.password
+      );
+      return response.status(HttpStatus.OK).json({
+        message: "Welcome Back",
+        token,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: "User login failed",
+        error: error.message,
+      });
+    }
   }
   @Public()
   @Get("profile")

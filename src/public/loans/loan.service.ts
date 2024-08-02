@@ -44,15 +44,12 @@ export class LoanService {
     });
   }
   async getAllLoans() {
-    const user = await this.prisma.loan.findMany({
-      where: {
-        deleted: false,
-      },
-    });
-    if (!user) {
+    const loan = await this.prisma.loan.findMany();
+    console.log(loan)
+    if (!loan) {
       throw new NotFoundException("User not found");
     }
-    return user;
+    return loan;
   }
   async findLenderApplications(lenderId: string): Promise<any[]> {
     const applications = await this.prisma.loan.findMany({

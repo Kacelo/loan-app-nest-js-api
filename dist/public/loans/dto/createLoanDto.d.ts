@@ -12,5 +12,4 @@ export declare class CreateLoanDto {
     latePaymentPenalty?: number;
     comments?: string;
     deleted?: boolean;
-    repaymentScheduleId?: string;
 }

@@ -29,23 +29,22 @@ export class UsersService {
           id: true,
         },
       });
-  
+
       if (existingUser) {
         throw new ConflictException("User already exists");
       }
       const user = await this.prisma.user.create({
         data: {
-          email:email,
-          username:username,
+          email: email,
+          username: username,
           password: hashedPassword,
           userRole: userRole || "BORROWER", // Default role is 'BORROWER'
         },
       });
       return user;
     } catch (error) {
-      console.log('user create failed', error)
+      console.log("user create failed", error);
     }
-   
   }
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const existingUser = await this.prisma.user.findUnique({
@@ -108,6 +107,7 @@ export class UsersService {
 
   async getAllUsers() {
     const user = await this.prisma.user.findMany();
+    console.log("user:", user);
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -119,6 +119,36 @@ export class UsersService {
         id: id,
       },
     });
+  }
+  async updateAll() {
+    const user = await this.prisma.user.updateMany({
+      where: { createdAt: null },
+      data: { createdAt: new Date() },
+    });
+  }
+ 
+  async fetchUsersWithNullCreatedAt() {
+    const users = await this.prisma.user.findMany({
+      where: {
+        createdAt: null,
+      },
+    });
+    return users;
+  }
+  async  updateUsersWithNullCreatedAt() {
+    const users = await this.fetchUsersWithNullCreatedAt();
+  
+    for (const user of users) {
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          createdAt: new Date(),
+        },
+      });
+    }
+    console.log('All users with null createdAt have been updated.');
   }
   async createCompany(userId: string, createCompanyDto: CreateCompanyDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });

@@ -28,11 +28,11 @@ model User {
   emergencyContactName   String?
   emergencyContactNumber String?
   preferences            String?
-  loans                  Loan[]            @relation("Loaner")
+  loans                  Loan[]            @relation("Lender")
   loansTaken             Loan[]            @relation("Loanee")
   mappedUserRoles        MappedUserRoles[] @relation("UserRoles")
-  createdAt              DateTime          @default(now())
-  updatedAt              DateTime          @updatedAt
+  createdAt              DateTime?         @default(now())
+  updatedAt              DateTime?         @updatedAt
   deleted                Boolean           @default(false)
   userRole               String?
   password               String?
@@ -42,9 +42,10 @@ model User {
 }
 
 model Loan {
-  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
-  lenderId           String              @db.ObjectId
-  borrowerId         String              @db.ObjectId
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  lenderId           String            @db.ObjectId
+  borrowerId         String            @db.ObjectId
+  repaymentSchedule  String            @unique @db.ObjectId
   amount             String?
   interestRate       String?
   duration           Int?
@@ -52,18 +53,16 @@ model Loan {
   endDate            DateTime?
   status             String?
   collateral         String?
-  repaymentSchedule  String?
   latePaymentPenalty Float?
   comments           String?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  deleted            Boolean             @default(false)
-  lender             User                @relation("Loaner", fields: [lenderId], references: [id])
-  borrower           User                @relation("Loanee", fields: [borrowerId], references: [id])
-  documents          Document[]          @relation("LoanDocuments")
-  repaymentSchedules RepaymentSchedule[]
-
-  repaymentScheduleId String @db.ObjectId
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  deleted            Boolean           @default(false)
+  lender             User              @relation("Lender", fields: [lenderId], references: [id])
+  borrower           User              @relation("Loanee", fields: [borrowerId], references: [id])
+  documents          Document[]        @relation("LoanDocuments")
+  repaymentSchedules RepaymentSchedule @relation("RepaymentSchedule", fields: [repaymentSchedule], references: [id])
+  // RepaymentSchedule   RepaymentSchedule[]
 }
 
 model Document {
@@ -102,7 +101,8 @@ model RepaymentSchedule {
   status      String // e.g., PENDING, PAID, LATE
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  loan        Loan?    @relation(fields: [loanId], references: [id])
+  // loan        Loan?    @relation("Loan",fields: [loanId], references: [id])
+  loan        Loan?    @relation("RepaymentSchedule")
 }
 
 model UserRole {

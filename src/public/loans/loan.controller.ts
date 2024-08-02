@@ -77,6 +77,7 @@ export class LoanController {
       });
     }
   }
+  @Public()
   @Get()
   async getLoans(@Res() response) {
     try {
@@ -85,9 +86,11 @@ export class LoanController {
         message: "All loan data found successfullyy",
         loanData,
       });
-    } catch (err) {
-      return response.status(err.status).json(err.response);
-    }
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: "Loan fetch failed",
+        error: error.message,
+      });    }
   }
   @Get("applications/:lenderId")
   async getLoanApplications(

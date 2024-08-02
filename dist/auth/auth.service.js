@@ -21,11 +21,13 @@ let AuthService = class AuthService {
     }
     async signIn(username, pword) {
         const user = await this.usersService.findOne(username);
-        const isMatch = (0, bcrypt_1.decodePassword)(pword, user?.password);
+        const isMatch = await (0, bcrypt_1.decodePassword)(pword, user?.password);
+        console.log(isMatch);
         if (!isMatch) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
+        console.log(payload);
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
@@ -33,7 +35,6 @@ let AuthService = class AuthService {
     async signUp(createUserDto) {
         const { email, username, password, userRole } = createUserDto;
         const hashedPassword = (0, bcrypt_1.encodePassword)(password);
-        console.log(createUserDto);
         const user = await this.usersService.createUser(createUserDto);
         const payload = {
             username: user.username,

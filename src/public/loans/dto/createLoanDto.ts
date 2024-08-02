@@ -59,7 +59,4 @@ export class CreateLoanDto {
   @IsBoolean()
   @IsOptional()
   deleted?: boolean;
-  @IsString()
-  @IsOptional()
-  repaymentScheduleId?: string;
 }

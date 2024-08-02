@@ -16,6 +16,7 @@ export declare class UsersController {
     getUsersById(response: any, id: string): Promise<any>;
     deleteUser(response: any, id: string): Promise<any>;
     updateUser(response: any, id: string, updateUserDto: UpdateUserDto): Promise<any>;
+    updateAllUser(response: any): Promise<any>;
     createCompany(response: any, userId: string, createCompanyDto: CreateCompanyDto): Promise<any>;
     updateCompany(response: any, companyId: string, updateCompanyDto: UpdateCompanyDto): Promise<any>;
     assignRole(userId: string, roleId: string): Promise<{

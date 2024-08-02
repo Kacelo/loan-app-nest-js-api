@@ -29,7 +29,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup(`${constants_1.API_PREFIX}/:version/docs`, app, document);
     app.use(cors());
-    await app.listen(3000);
+    await app.listen(4000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

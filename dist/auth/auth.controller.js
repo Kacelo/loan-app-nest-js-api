@@ -23,8 +23,20 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    signIn(signInDto) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    async signIn(signInDto, response) {
+        try {
+            const token = await this.authService.signIn(signInDto.username, signInDto.password);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: "Welcome Back",
+                token,
+            });
+        }
+        catch (error) {
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: "User login failed",
+                error: error.message,
+            });
+        }
     }
     getProfile(req) {
         return req.user;
@@ -51,9 +63,10 @@ __decorate([
     (0, constants_1.Public)(),
     (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [signInDto_1.SignInDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [signInDto_1.SignInDto, Object]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, constants_1.Public)(),
