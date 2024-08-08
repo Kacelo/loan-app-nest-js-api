@@ -33,7 +33,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateCompanyDto.prototype, "state", void 0);
+], CreateCompanyDto.prototype, "region", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -53,5 +53,5 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateCompanyDto.prototype, "website", void 0);
+], CreateCompanyDto.prototype, "regitstrationNumber", void 0);
 //# sourceMappingURL=createCompanyDto.js.map

@@ -21,7 +21,7 @@ let UsersService = class UsersService {
     async createUser(createUserDto) {
         try {
             console.log("using prisma");
-            const { email, username, password, userRole } = createUserDto;
+            const { email, username, password, companyId, role } = createUserDto;
             const hashedPassword = (0, bcrypt_1.encodePassword)(password);
             const existingUser = await this.prisma.user.findFirst({
                 where: {
@@ -34,12 +34,16 @@ let UsersService = class UsersService {
             if (existingUser) {
                 throw new common_1.ConflictException("User already exists");
             }
+            if (role === 'Lender' && !companyId) {
+                throw new Error('Company ID is required for lenders.');
+            }
             const user = await this.prisma.user.create({
                 data: {
-                    email: email,
-                    username: username,
-                    password: hashedPassword,
-                    userRole: userRole || "BORROWER",
+                    email,
+                    username,
+                    role,
+                    companyId: role === 'Lender' ? companyId : null,
+                    password
                 },
             });
             return user;
@@ -173,18 +177,6 @@ let UsersService = class UsersService {
             data: updateCompanyDto,
         });
     }
-    async deleteCompany(id, deleted) {
-        const existingCompany = await this.prisma.company.findUnique({
-            where: { id },
-        });
-        if (!existingCompany) {
-            throw new common_1.NotFoundException("Loan not found");
-        }
-        return await this.prisma.company.update({
-            where: { id },
-            data: { deleted },
-        });
-    }
     async getAllLoans() {
         const companies = await this.prisma.loan.findMany({
             where: {
@@ -197,24 +189,6 @@ let UsersService = class UsersService {
         return companies;
     }
     async searchCompany(name) { }
-    async assignRoleToUser(userId, roleId) {
-        const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        if (!user) {
-            throw new common_1.NotFoundException("user not found");
-        }
-        const role = await this.prisma.userRole.findUnique({
-            where: { id: roleId },
-        });
-        if (!role) {
-            throw new common_1.NotFoundException("Role not found");
-        }
-        return this.prisma.mappedUserRoles.create({
-            data: {
-                userId,
-                roleId,
-            },
-        });
-    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

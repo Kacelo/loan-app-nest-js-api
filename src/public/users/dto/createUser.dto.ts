@@ -1,5 +1,11 @@
-import { UserRole } from '@prisma/client';
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 
 export class CreateUserDto {
   @IsString()
@@ -16,5 +22,9 @@ export class CreateUserDto {
   readonly password: string;
   @IsString()
   @IsOptional()
-  userRole?: string;
+  role: string; // Can extend this for more roles
+  @IsString()
+  @IsOptional()
+  companyId?: string; // Optional, only required if role is Lender
+  // Add other necess}
 }

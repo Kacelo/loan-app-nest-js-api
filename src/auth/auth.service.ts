@@ -31,13 +31,13 @@ export class AuthService {
     };
   }
   async signUp(createUserDto: CreateUserDto) {
-    const { email, username, password, userRole } = createUserDto;
+    const { email, username, password, role } = createUserDto;
     const hashedPassword = encodePassword(password);
     const user = await this.usersService.createUser(createUserDto);
     const payload = {
       username: user.username,
       sub: user.id,
-      role: user.userRole,
+      role: user.role,
     };
     return {
       access_token: this.jwtService.sign(payload),

@@ -33,13 +33,13 @@ let AuthService = class AuthService {
         };
     }
     async signUp(createUserDto) {
-        const { email, username, password, userRole } = createUserDto;
+        const { email, username, password, role } = createUserDto;
         const hashedPassword = (0, bcrypt_1.encodePassword)(password);
         const user = await this.usersService.createUser(createUserDto);
         const payload = {
             username: user.username,
             sub: user.id,
-            role: user.userRole,
+            role: user.role,
         };
         return {
             access_token: this.jwtService.sign(payload),

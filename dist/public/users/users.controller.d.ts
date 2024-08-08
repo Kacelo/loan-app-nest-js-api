@@ -10,6 +10,7 @@ export declare class UsersController {
         username: string;
         email: string;
         password: string;
+        role: string;
     }): Promise<UserModel>;
     replaceUser(response: any, id: string, updateUserDto: UpdateUserDto): Promise<any>;
     getAllUsers(response: any): Promise<any>;
@@ -19,12 +20,4 @@ export declare class UsersController {
     updateAllUser(response: any): Promise<any>;
     createCompany(response: any, userId: string, createCompanyDto: CreateCompanyDto): Promise<any>;
     updateCompany(response: any, companyId: string, updateCompanyDto: UpdateCompanyDto): Promise<any>;
-    assignRole(userId: string, roleId: string): Promise<{
-        id: string;
-        userId: string;
-        roleId: string;
-        createdAt: Date;
-        updatedAt: Date;
-        deleted: boolean;
-    }>;
 }

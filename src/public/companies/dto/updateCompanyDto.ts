@@ -1,36 +1,36 @@
 // update-company.dto.ts
-import { IsString, IsOptional, IsEmail } from 'class-validator';
+import { IsString, IsOptional, IsEmail, IsNotEmpty } from 'class-validator';
 
 export class UpdateCompanyDto {
   @IsString()
-  @IsOptional()
-  name?: string;
+  @IsNotEmpty()
+  name: string;
 
   @IsString()
   @IsOptional()
-  address?: string;
+  address: string;
 
   @IsString()
   @IsOptional()
-  city?: string;
+  city: string;
 
   @IsString()
   @IsOptional()
-  state?: string;
+  region: string;
 
   @IsString()
   @IsOptional()
-  postalCode?: string;
+  postalCode: string;
 
   @IsString()
   @IsOptional()
-  phoneNumber?: string;
+  phoneNumber: string;
 
   @IsEmail()
-  @IsOptional()
-  email?: string;
+  @IsNotEmpty()
+  email: string;
 
   @IsString()
   @IsOptional()
-  website?: string;
+  regitstrationNumber: string;
 }

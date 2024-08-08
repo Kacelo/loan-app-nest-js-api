@@ -29,7 +29,7 @@ export class UsersController {
 
   @Post()
   async signupUser(
-    @Body() userData: { username: string; email: string; password: string }
+    @Body() userData: { username: string; email: string; password: string, role: string }
   ): Promise<UserModel> {
     const password = encodePassword(userData.password);
     console.log("encoded password", password);
@@ -164,10 +164,10 @@ export class UsersController {
       });
     }
   }
-  @Public()
-  @Post(":id/assign-role")
-  // @Roles('ADMIN')
-  assignRole(@Param("id") userId: string, @Body("roleId") roleId: string) {
-    return this.userService.assignRoleToUser(userId, roleId);
-  }
+  // @Public()
+  // @Post(":id/assign-role")
+  // // @Roles('ADMIN')
+  // assignRole(@Param("id") userId: string, @Body("roleId") roleId: string) {
+  //   return this.userService.assignRoleToUser(userId, roleId);
+  // }
 }

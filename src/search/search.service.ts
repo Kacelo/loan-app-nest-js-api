@@ -11,7 +11,7 @@ export class SearchService {
       where: {
         OR: [
           { username: { contains: query, mode: 'insensitive' } },
-          { firstname: { contains: query, mode: 'insensitive' } },
+          { firstName: { contains: query, mode: 'insensitive' } },
           { email: { contains: query, mode: 'insensitive' } },
         ],
         AND: [
