@@ -16,8 +16,11 @@ export class AuthService {
     username: string,
     pword: string
   ){
+    console.log(username, pword)
     // const hashedPassword = encodePassword(pword);
     const user = await this.usersService.findOne(username);
+    console.log(user)
+
     // console.log("passwords", user?.password, hashedPassword)
     const isMatch = await decodePassword(pword, user?.password);
     console.log(isMatch)
@@ -33,6 +36,7 @@ export class AuthService {
   async signUp(createUserDto: CreateUserDto) {
     const { email, username, password, role } = createUserDto;
     const hashedPassword = encodePassword(password);
+ 
     const user = await this.usersService.createUser(createUserDto);
     const payload = {
       username: user.username,

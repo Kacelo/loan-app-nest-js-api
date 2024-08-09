@@ -34,18 +34,31 @@ let UsersService = class UsersService {
             if (existingUser) {
                 throw new common_1.ConflictException("User already exists");
             }
-            if (role === 'Lender' && !companyId) {
-                throw new Error('Company ID is required for lenders.');
-            }
+            console.log(createUserDto);
             const user = await this.prisma.user.create({
                 data: {
                     email,
                     username,
                     role,
-                    companyId: role === 'Lender' ? companyId : null,
-                    password
+                    companyId: role === "Lender" ? companyId : null,
+                    password: hashedPassword,
                 },
             });
+            if (role === "Borrower") {
+                const borrowers = await this.prisma.borrower.create({
+                    data: {
+                        userId: user.id,
+                    },
+                });
+            }
+            else if (role === "Lender") {
+                await this.prisma.lender.create({
+                    data: {
+                        userId: user.id,
+                        companyId: companyId,
+                    },
+                });
+            }
             return user;
         }
         catch (error) {
@@ -149,7 +162,7 @@ let UsersService = class UsersService {
                 },
             });
         }
-        console.log('All users with null createdAt have been updated.');
+        console.log("All users with null createdAt have been updated.");
     }
     async createCompany(userId, createCompanyDto) {
         const user = await this.prisma.user.findUnique({ where: { id: userId } });

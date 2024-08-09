@@ -33,28 +33,39 @@ export class UsersService {
       if (existingUser) {
         throw new ConflictException("User already exists");
       }
-      if (role === 'Lender' && !companyId) {
-        throw new Error('Company ID is required for lenders.');
-      }
-      // if (role === 'Borrower') {
-      //   await prisma.borrower.create({
-      //     data: {
-      //       userId: user.id,
-      //       // Additional borrower-specific fields
-      //     },
-      //   });
+      // if (role === 'Lender' && !companyId) {
+      //   throw new Error('Company ID is required for lenders.');
       // }
+      console.log(createUserDto);
+
       // Step 2: Create the user
       const user = await this.prisma.user.create({
         data: {
           email,
           username,
           role,
-          companyId: role === 'Lender' ? companyId : null,
-          password // Only set companyId if the role is Lender
+          companyId: role === "Lender" ? companyId : null,
+          password: hashedPassword, // Only set companyId if the role is Lender
           // Add other necessary fields
         },
       });
+      if (role === "Borrower") {
+        const borrowers = await this.prisma.borrower.create({
+          data: {
+            userId: user.id,
+            // Additional borrower-specific fields
+          },
+        });
+        // return borrowers
+      } else if (role === "Lender") {
+        await this.prisma.lender.create({
+          data: {
+            userId: user.id,
+            companyId: companyId,
+            // Additional lender-specific fields
+          },
+        });
+      }
       return user;
     } catch (error) {
       console.log("user create failed", error);
@@ -140,7 +151,7 @@ export class UsersService {
       data: { createdAt: new Date() },
     });
   }
- 
+
   async fetchUsersWithNullCreatedAt() {
     const users = await this.prisma.user.findMany({
       where: {
@@ -149,9 +160,9 @@ export class UsersService {
     });
     return users;
   }
-  async  updateUsersWithNullCreatedAt() {
+  async updateUsersWithNullCreatedAt() {
     const users = await this.fetchUsersWithNullCreatedAt();
-  
+
     for (const user of users) {
       await this.prisma.user.update({
         where: {
@@ -162,7 +173,7 @@ export class UsersService {
         },
       });
     }
-    console.log('All users with null createdAt have been updated.');
+    console.log("All users with null createdAt have been updated.");
   }
   async createCompany(userId: string, createCompanyDto: CreateCompanyDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });

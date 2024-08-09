@@ -20,7 +20,9 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async signIn(username, pword) {
+        console.log(username, pword);
         const user = await this.usersService.findOne(username);
+        console.log(user);
         const isMatch = await (0, bcrypt_1.decodePassword)(pword, user?.password);
         console.log(isMatch);
         if (!isMatch) {

@@ -13,7 +13,8 @@ import { AuthModule } from "./auth/auth.module";
 // import { RepaymentScheduleModule } from "./public/repayment-schedule/repayment-schedule.module";
 // import { CompanyModule } from "./public/companies/company.module";
 import { DocumentsModule } from "./public/documents/documents.module";
-import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule } from "@nestjs/schedule";
+import { CompanyModule } from "./public/companies/company.module";
 
 require("dotenv").config();
 
@@ -25,10 +26,10 @@ const uri = process.env.DATABASE_URL;
     UsersModule,
     SearchModule,
     AuthModule,
-    // RolesModule,
+    CompanyModule,
     DocumentsModule,
     MongooseModule.forRoot(uri),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -71,7 +71,7 @@ dist/
 
 # Generated folders by other tools
 out/
-public/
+# public/
 dist/
 build/
 
