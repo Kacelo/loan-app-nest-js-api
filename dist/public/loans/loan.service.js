@@ -17,8 +17,21 @@ let LoanService = class LoanService {
         this.prisma = prisma;
     }
     async createLoan(createLoanDto) {
+        const { lenderId, borrowerId, amount, interestRate, startDate, endDate, status, collateral, latePaymentPenalty, comments, deleted, } = createLoanDto;
         return await this.prisma.loan.create({
-            data: createLoanDto,
+            data: {
+                lenderId,
+                borrowerId,
+                amount,
+                interestRate,
+                startDate,
+                endDate,
+                status,
+                collateral,
+                latePaymentPenalty,
+                comments,
+                deleted,
+            },
         });
     }
     async updateLoan(id, updateLoanDto) {

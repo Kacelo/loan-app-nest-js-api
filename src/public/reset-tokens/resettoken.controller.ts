@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   NotFoundException,
@@ -27,13 +28,12 @@ export class ResetTokensController {
   @Post("request-reset")
   @HttpCode(HttpStatus.OK)
   async requestReset(@Body() createResetTokenDto: CreateResetTokenDto) {
-    const { email, username } = createResetTokenDto;
-    if (!email && !username) {
+    const { email } = createResetTokenDto;
+    if (!email) {
       throw new NotFoundException("Email pr username must be provided");
     }
     const result = await this.resetTokensService.createResetToken({
       email,
-      username,
     });
 
     return {
@@ -49,6 +49,14 @@ export class ResetTokensController {
     const result = await this.resetTokensService.validateResetToken(token);
     return result;
   }
+  @Public()
+  @Get('get-tokens')
+  @HttpCode(HttpStatus.OK)
+  async getTokens(){
+    const tokens = await this.resetTokensService.getAllTokens();
+    console.log(tokens)
+    return tokens
+  }
 
   @Public()
   @Post("reset-password")
@@ -57,7 +65,9 @@ export class ResetTokensController {
     const { token, newPassword } = resetPassworddto;
 
     const decoded = await this.resetTokensService.validateResetToken(token);
-    const userId = decoded.user.id;
+    console.log("decoded ",decoded)
+
+    const userId = decoded.sub;
     await this.prisma.user.update({
       where: { id: userId },
       data: { password: newPassword },

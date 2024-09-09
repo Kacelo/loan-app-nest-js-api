@@ -8,5 +8,7 @@ import { ResetTokensService } from './resettoken.service';
   imports: [],
   controllers: [ResetTokensController],
   providers: [ResetTokensService, PrismaService],
+  exports: [ResetTokensService],
+
 })
 export class PasswordResetModule {}

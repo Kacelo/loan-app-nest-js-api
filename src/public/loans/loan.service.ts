@@ -9,9 +9,32 @@ import { Loan } from "@prisma/client";
 export class LoanService {
   constructor(private prisma: PrismaService) {}
 
-  async createLoan(createLoanDto: any) {
+  async createLoan(createLoanDto: CreateLoanDto) {
+    const { lenderId,
+      borrowerId,
+      amount,
+      interestRate,
+      startDate,
+      endDate,
+      status,
+      collateral,
+      latePaymentPenalty,
+      comments,
+      deleted, } = createLoanDto;
     return await this.prisma.loan.create({
-      data: createLoanDto,
+      data: {
+        lenderId,
+        borrowerId,
+        amount,
+        interestRate,
+        startDate,
+        endDate,
+        status,
+        collateral,
+        latePaymentPenalty,
+        comments,
+        deleted,
+      },
     });
   }
 
@@ -45,7 +68,7 @@ export class LoanService {
   }
   async getAllLoans() {
     const loan = await this.prisma.loan.findMany();
-    console.log(loan)
+    console.log(loan);
     if (!loan) {
       throw new NotFoundException("User not found");
     }

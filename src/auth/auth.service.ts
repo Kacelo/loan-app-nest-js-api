@@ -4,6 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "src/public/users/users.service";
 import { CreateUserDto } from "src/public/users/dto/createUser.dto";
 import { PrismaService } from "src/prisma.service";
+import { ResetTokensService } from "src/public/reset-tokens/resettoken.service";
 
 @Injectable()
 export class AuthService {

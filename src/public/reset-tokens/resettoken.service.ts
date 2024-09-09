@@ -16,6 +16,7 @@ export interface IResetTokenReturn {
 }
 
 export interface IDecodedReset {
+  sub: any;
   user: { id: string };
   iat: number;
   exp: number;
@@ -47,6 +48,16 @@ export class ResetTokensService {
       });
     });
   }
+  async generateToken(email: string, userId:string){
+    try {
+      const payload = { sub:userId , email: email };
+      return {
+        access_token: await this.jwtService.signAsync(payload),
+      };
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   async sendResetEmail(email: string, resetToken: string) {
     const resetLink = `http://yourapp.com/reset-password?token=${resetToken}`;
@@ -63,10 +74,8 @@ export class ResetTokensService {
 
   async createResetToken({
     email,
-    username,
   }: {
     email?: string;
-    username?: string;
   }): Promise<IResetTokenReturn> {
     let user: User | null;
     if (email) {
@@ -75,12 +84,7 @@ export class ResetTokensService {
           email: email,
         },
       });
-    } else if (username) {
-      user = await this.prisma.user.findUnique({
-        where: {
-          username: username,
-        },
-      });
+    
     }
     if (!user) {
       if (!user) {
@@ -93,34 +97,52 @@ export class ResetTokensService {
         userId: user.id,
       },
     });
-
+  
     if (existingResetToken.length > 0) {
       throw new ConflictException("Reset token already exists for this user");
     }
     const resetToken = await this.generateJWTToken(user);
+    const resetToken2 = await this.generateToken(user.email,user.id);
+
+    console.log('new token done:',resetToken2)
+   
 
     const newResetToken = await this.prisma.resetTokens.create({
       data: {
-        resetToken: resetToken,
+        resetToken: resetToken2.access_token,
         userId: user.id,
       },
     });
+    console.log('new token done:', newResetToken)
     // Send reset email
-    await this.sendResetEmail(user.email, resetToken);
+    await this.sendResetEmail(user.email, newResetToken.resetToken);
 
     return {
       resetToken: newResetToken.resetToken,
       error: false,
     };
   }
+  async getAllTokens(): Promise<string> {
+    try {
+      const tokens = await this.prisma.resetTokens.findMany()
+      console.log(tokens)
+      return
+    } catch (error) {
+      console.log(error)     
+    }
+  }
   async validateResetToken(resetToken: string): Promise<IDecodedReset> {
     try {
+      console.log("decoded ",resetToken)
+
       const decoded = verify(
         resetToken,
         process.env.JWT_SECRET
       ) as IDecodedReset;
+      console.log("decoded ",decoded)
       return decoded;
     } catch (error) {
+      
       throw new ConflictException("Invalid or expired reset token");
     }
   }

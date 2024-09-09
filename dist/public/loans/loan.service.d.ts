@@ -1,9 +1,10 @@
 import { PrismaService } from "src/prisma.service";
+import { CreateLoanDto } from "./dto/createLoanDto";
 import { UpdateLoanDto } from "./dto/updateLoanDto";
 export declare class LoanService {
     private prisma;
     constructor(prisma: PrismaService);
-    createLoan(createLoanDto: any): Promise<{
+    createLoan(createLoanDto: CreateLoanDto): Promise<{
         id: string;
         lenderId: string;
         borrowerId: string;

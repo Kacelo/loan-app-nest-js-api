@@ -1,15 +1,13 @@
 export declare class CreateLoanDto {
-    lenderId?: string;
+    lenderId: string;
     borrowerId: string;
-    amount?: string;
-    interestRate?: string;
-    duration?: number;
-    startDate?: Date;
-    endDate?: Date;
-    status?: string;
+    amount: GLfloat;
+    interestRate: GLfloat;
+    startDate: Date;
+    endDate: Date;
+    status: string;
     collateral?: string;
-    repaymentSchedule?: string;
-    latePaymentPenalty?: number;
+    latePaymentPenalty: number;
     comments?: string;
     deleted?: boolean;
 }
