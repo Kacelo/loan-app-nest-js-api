@@ -14,6 +14,31 @@ export class CompanyController {
   @Public()
   @Post()
   async createCompany(
+    @Body()
+    companyData: {
+      email: string;
+      name: string;
+      address: string;
+      city: string;
+      region: string;
+      registrationNumber: string;
+      phoneNumber: string;
+      postalCode: string;
+    }
+  ): Promise<Company> {
+    const newCompany = await this.companyService.createCompany(companyData);
+    console.log(newCompany);
+    return newCompany;
+  }
+  @Public()
+  @Post("/find")
+  async findCompany(
+    @Body() data: {  email: string; }
+  ): Promise<Company> {
+    const newCompany = await this.companyService.getCompanyByEmail(data.email);
+    console.log(newCompany);
+    return newCompany;
+  }
     @Body() createCompanyDto: CreateCompanyDto
   ): Promise<Company> {
     return this.companyService.createCompany(createCompanyDto);

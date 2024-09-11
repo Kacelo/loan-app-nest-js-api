@@ -20,25 +20,28 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async signIn(username, pword) {
+        console.log(username, pword);
         const user = await this.usersService.findOne(username);
-        const isMatch = (0, bcrypt_1.decodePassword)(pword, user?.password);
-        if (!isMatch) {
+        console.log(user);
+        const isMatch = await (0, bcrypt_1.decodePassword)(pword, user?.password);
+        console.log(isMatch);
+        if (!user) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
+        console.log(payload);
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
     }
     async signUp(createUserDto) {
-        const { email, username, password, userRole } = createUserDto;
+        const { email, username, password, role } = createUserDto;
         const hashedPassword = (0, bcrypt_1.encodePassword)(password);
-        console.log(createUserDto);
         const user = await this.usersService.createUser(createUserDto);
         const payload = {
             username: user.username,
             sub: user.id,
-            role: user.userRole,
+            role: user.role,
         };
         return {
             access_token: this.jwtService.sign(payload),

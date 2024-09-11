@@ -8,23 +8,23 @@ export class CreateCompanyDto {
 
   @IsString()
   @IsOptional()
-  address?: string;
+  address: string;
 
   @IsString()
   @IsOptional()
-  city?: string;
+  city: string;
 
   @IsString()
   @IsOptional()
-  state?: string;
+  region: string;
 
   @IsString()
   @IsOptional()
-  postalCode?: string;
+  postalCode: string;
 
   @IsString()
   @IsOptional()
-  phoneNumber?: string;
+  phoneNumber: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -32,5 +32,5 @@ export class CreateCompanyDto {
 
   @IsString()
   @IsOptional()
-  website?: string;
+  registrationNumber: string;
 }

@@ -16,7 +16,7 @@ class UpdateCompanyDto {
 exports.UpdateCompanyDto = UpdateCompanyDto;
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateCompanyDto.prototype, "name", void 0);
 __decorate([
@@ -33,7 +33,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], UpdateCompanyDto.prototype, "state", void 0);
+], UpdateCompanyDto.prototype, "region", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -46,12 +46,12 @@ __decorate([
 ], UpdateCompanyDto.prototype, "phoneNumber", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateCompanyDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], UpdateCompanyDto.prototype, "website", void 0);
+], UpdateCompanyDto.prototype, "registrationNumber", void 0);
 //# sourceMappingURL=updateCompanyDto.js.map

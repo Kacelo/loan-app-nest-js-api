@@ -29,7 +29,7 @@ export class UsersController {
 
   @Post()
   async signupUser(
-    @Body() userData: { username: string; email: string; password: string }
+    @Body() userData: { username: string; email: string; password: string, role: string }
   ): Promise<UserModel> {
     const password = encodePassword(userData.password);
     console.log("encoded password", password);
@@ -53,16 +53,21 @@ export class UsersController {
       });
     }
   }
+  @Public()
   @Get()
   async getAllUsers(@Res() response) {
     try {
       const userData = await this.userService.getAllUsers();
+      console.log("user data: ", userData);
       return response.status(HttpStatus.OK).json({
         message: "All users data found successfullyy",
         userData,
       });
     } catch (err) {
-      return response.status(err.status).json(err.response);
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: "No Users Found",
+        error: err.message,
+      });
     }
   }
   @Get("/:id")
@@ -74,7 +79,9 @@ export class UsersController {
         existingUser,
       });
     } catch (err) {
-      return response.status(err.status).json(err.response);
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: "User Not Found",
+      });
     }
   }
   @Delete(":id")
@@ -97,6 +104,19 @@ export class UsersController {
   ) {
     try {
       const updatedUser = await this.userService.updateUser(id, updateUserDto);
+      return response.status(HttpStatus.OK).json(updatedUser);
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: "Error: User not updated!",
+        error: err.message,
+      });
+    }
+  }
+  @Public()
+  @Patch("update-all")
+  async updateAllUser(@Res() response) {
+    try {
+      const updatedUser = await this.userService.fetchUsersWithNullCreatedAt();
       return response.status(HttpStatus.OK).json(updatedUser);
     } catch (err) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -144,10 +164,10 @@ export class UsersController {
       });
     }
   }
-  @Public()
-  @Post(":id/assign-role")
-  // @Roles('ADMIN')
-  assignRole(@Param("id") userId: string, @Body("roleId") roleId: string) {
-    return this.userService.assignRoleToUser(userId, roleId);
-  }
+  // @Public()
+  // @Post(":id/assign-role")
+  // // @Roles('ADMIN')
+  // assignRole(@Param("id") userId: string, @Body("roleId") roleId: string) {
+  //   return this.userService.assignRoleToUser(userId, roleId);
+  // }
 }

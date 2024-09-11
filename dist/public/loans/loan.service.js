@@ -17,8 +17,21 @@ let LoanService = class LoanService {
         this.prisma = prisma;
     }
     async createLoan(createLoanDto) {
+        const { lenderId, borrowerId, amount, interestRate, startDate, endDate, status, collateral, latePaymentPenalty, comments, deleted, } = createLoanDto;
         return await this.prisma.loan.create({
-            data: createLoanDto,
+            data: {
+                lenderId,
+                borrowerId,
+                amount,
+                interestRate,
+                startDate,
+                endDate,
+                status,
+                collateral,
+                latePaymentPenalty,
+                comments,
+                deleted,
+            },
         });
     }
     async updateLoan(id, updateLoanDto) {
@@ -46,15 +59,12 @@ let LoanService = class LoanService {
         });
     }
     async getAllLoans() {
-        const user = await this.prisma.loan.findMany({
-            where: {
-                deleted: false,
-            },
-        });
-        if (!user) {
+        const loan = await this.prisma.loan.findMany();
+        console.log(loan);
+        if (!loan) {
             throw new common_1.NotFoundException("User not found");
         }
-        return user;
+        return loan;
     }
     async findLenderApplications(lenderId) {
         const applications = await this.prisma.loan.findMany({

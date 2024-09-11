@@ -32,26 +32,26 @@ export class RolesGuard implements CanActivate {
     // }
     // const { user } = context.switchToHttp().getRequest();
     // return requiredRoles.some((role) => user.roles?.includes(role));
-    const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization?.split(" ")[1];
-    if (!token) {
-      throw new ForbiddenException("Access denied");
-    }
+    // const request = context.switchToHttp().getRequest();
+    // const token = request.headers.authorization?.split(" ")[1];
+    // if (!token) {
+    //   throw new ForbiddenException("Access denied");
+    // }
 
-    const decodedToken = this.jwtService.verify(token);
-    const userId = decodedToken.sub;
+    // const decodedToken = this.jwtService.verify(token);
+    // const userId = decodedToken.sub;
 
-    const userRoles = await this.prisma.mappedUserRoles.findMany({
-      where: { userId },
-      include: { role: true },
-    });
+    // const userRoles = await this.prisma.mappedUserRoles.findMany({
+    //   where: { userId },
+    //   include: { role: true },
+    // });
 
-    const userHasRole = userRoles.some((userRole) =>
-      roles.includes(userRole.role.name)
-    );
-    if (!userHasRole) {
-      throw new ForbiddenException("Access denied");
-    }
+    // const userHasRole = userRoles.some((userRole) =>
+    //   roles.includes(userRole.role.name)
+    // );
+    // if (!userHasRole) {
+    //   throw new ForbiddenException("Access denied");
+    // }
 
     return true;
   }

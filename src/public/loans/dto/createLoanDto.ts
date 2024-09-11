@@ -10,7 +10,7 @@ import {
 export class CreateLoanDto {
   @IsString()
   @IsNotEmpty()
-  lenderId?: string;
+  lenderId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -18,39 +18,31 @@ export class CreateLoanDto {
 
   @IsString()
   @IsOptional()
-  amount?: string;
+  amount: GLfloat;
 
   @IsString()
   @IsOptional()
-  interestRate?: string;
-
-  @IsNumber()
-  @IsOptional()
-  duration?: number; // Duration in months
+  interestRate: GLfloat;
 
   @IsDateString()
   @IsOptional()
-  startDate?: Date;
+  startDate: Date;
 
   @IsDateString()
   @IsOptional()
-  endDate?: Date;
+  endDate: Date;
 
   @IsString()
   @IsOptional()
-  status?: string;
+  status: string;
 
   @IsString()
   @IsOptional()
   collateral?: string;
 
-  @IsString()
-  @IsOptional()
-  repaymentSchedule?: string;
-
   @IsNumber()
   @IsOptional()
-  latePaymentPenalty?: number;
+  latePaymentPenalty: number;
 
   @IsString()
   @IsOptional()
@@ -59,7 +51,4 @@ export class CreateLoanDto {
   @IsBoolean()
   @IsOptional()
   deleted?: boolean;
-  @IsString()
-  @IsOptional()
-  repaymentScheduleId?: string;
 }

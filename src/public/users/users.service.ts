@@ -17,35 +17,54 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const { email, username, password, role } = createUserDto;
+
     try {
       console.log("using prisma");
-      const { email, username, password, userRole } = createUserDto;
       const hashedPassword = encodePassword(password);
       const existingUser = await this.prisma.user.findFirst({
         where: {
           email: email,
+          username: username,
         },
         select: {
           id: true,
         },
       });
-  
+
       if (existingUser) {
         throw new ConflictException("User already exists");
       }
+      // Step 2: Create the user
       const user = await this.prisma.user.create({
         data: {
-          email:email,
-          username:username,
-          password: hashedPassword,
-          userRole: userRole || "BORROWER", // Default role is 'BORROWER'
+          email,
+          username,
+          role,
+          password: hashedPassword, // Only set companyId if the role is Lender
+          // Add other necessary fields
         },
       });
+      if (role === "Borrower") {
+        const borrowers = await this.prisma.borrower.create({
+          data: {
+            userId: user.id,
+          },
+        });
+        // return borrowers
+      } else if (role === "Lender") {
+        await this.prisma.lender.create({
+          data: {
+            userId: user.id,
+            companyId: user.companyId,
+            // Additional lender-specific fields
+          },
+        });
+      }
       return user;
     } catch (error) {
-      console.log('user create failed', error)
+      console.log("user create failed", error);
     }
-   
   }
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const existingUser = await this.prisma.user.findUnique({
@@ -108,6 +127,7 @@ export class UsersService {
 
   async getAllUsers() {
     const user = await this.prisma.user.findMany();
+    console.log("user:", user);
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -120,22 +140,62 @@ export class UsersService {
       },
     });
   }
+  async updateAll() {
+    const user = await this.prisma.user.updateMany({
+      where: { createdAt: null },
+      data: { createdAt: new Date() },
+    });
+  }
+
+  async fetchUsersWithNullCreatedAt() {
+    const users = await this.prisma.user.findMany({
+      where: {
+        createdAt: null,
+      },
+    });
+    return users;
+  }
+  async updateUsersWithNullCreatedAt() {
+    const users = await this.fetchUsersWithNullCreatedAt();
+
+    for (const user of users) {
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          createdAt: new Date(),
+        },
+      });
+    }
+    console.log("All users with null createdAt have been updated.");
+  }
   async createCompany(userId: string, createCompanyDto: CreateCompanyDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      throw new NotFoundException("User not found");
+    try {
+      // Check if the user is already associated with a company
+      const existingLender = await this.prisma.lender.findFirst({
+        where: { userId },
+      });
+      if (existingLender && existingLender.companyId) {
+        throw new ConflictException("Lender is already associated with a company");
+      }
+      const company = await this.prisma.company.create({
+        data: createCompanyDto,
+      });
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { companyId: company.id },
+      });
+  
+      return company;
+    } catch (error) {
+      console.log("Company creation failed", error);
+      throw error;
     }
+    
 
-    const company = await this.prisma.company.create({
-      data: createCompanyDto,
-    });
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { companyId: company.id },
-    });
-
-    return company;
+   
   }
   async updateCompany(companyId: string, updateCompanyDto: UpdateCompanyDto) {
     const company = await this.prisma.company.findUnique({
@@ -150,20 +210,20 @@ export class UsersService {
       data: updateCompanyDto,
     });
   }
-  async deleteCompany(id: string, deleted: boolean) {
-    const existingCompany = await this.prisma.company.findUnique({
-      where: { id },
-    });
+  // async deleteCompany(id: string, deleted: boolean) {
+  //   const existingCompany = await this.prisma.company.findUnique({
+  //     where: { id },
+  //   });
 
-    if (!existingCompany) {
-      throw new NotFoundException("Loan not found");
-    }
+  //   if (!existingCompany) {
+  //     throw new NotFoundException("Loan not found");
+  //   }
 
-    return await this.prisma.company.update({
-      where: { id },
-      data: { deleted },
-    });
-  }
+  //   return await this.prisma.company.update({
+  //     where: { id },
+  //     data: { deleted },
+  //   });
+  // }
   async getAllLoans() {
     const companies = await this.prisma.loan.findMany({
       where: {
@@ -176,24 +236,24 @@ export class UsersService {
     return companies;
   }
   async searchCompany(name: string) {}
-  async assignRoleToUser(userId: string, roleId: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      throw new NotFoundException("user not found");
-    }
+  // async assignRoleToUser(userId: string, roleId: string) {
+  //   const user = await this.prisma.user.findUnique({ where: { id: userId } });
+  //   if (!user) {
+  //     throw new NotFoundException("user not found");
+  //   }
 
-    const role = await this.prisma.userRole.findUnique({
-      where: { id: roleId },
-    });
-    if (!role) {
-      throw new NotFoundException("Role not found");
-    }
+  //   const role = await this.prisma.userRole.findUnique({
+  //     where: { id: roleId },
+  //   });
+  //   if (!role) {
+  //     throw new NotFoundException("Role not found");
+  //   }
 
-    return this.prisma.mappedUserRoles.create({
-      data: {
-        userId,
-        roleId,
-      },
-    });
-  }
+  //   return this.prisma.mappedUserRoles.create({
+  //     data: {
+  //       userId,
+  //       roleId,
+  //     },
+  //   });
+  // }
 }

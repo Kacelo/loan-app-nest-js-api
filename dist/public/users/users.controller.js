@@ -47,13 +47,17 @@ let UsersController = class UsersController {
     async getAllUsers(response) {
         try {
             const userData = await this.userService.getAllUsers();
+            console.log("user data: ", userData);
             return response.status(common_1.HttpStatus.OK).json({
                 message: "All users data found successfullyy",
                 userData,
             });
         }
         catch (err) {
-            return response.status(err.status).json(err.response);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: "No Users Found",
+                error: err.message,
+            });
         }
     }
     async getUsersById(response, id) {
@@ -65,7 +69,9 @@ let UsersController = class UsersController {
             });
         }
         catch (err) {
-            return response.status(err.status).json(err.response);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: "User Not Found",
+            });
         }
     }
     async deleteUser(response, id) {
@@ -83,6 +89,18 @@ let UsersController = class UsersController {
     async updateUser(response, id, updateUserDto) {
         try {
             const updatedUser = await this.userService.updateUser(id, updateUserDto);
+            return response.status(common_1.HttpStatus.OK).json(updatedUser);
+        }
+        catch (err) {
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: "Error: User not updated!",
+                error: err.message,
+            });
+        }
+    }
+    async updateAllUser(response) {
+        try {
+            const updatedUser = await this.userService.fetchUsersWithNullCreatedAt();
             return response.status(common_1.HttpStatus.OK).json(updatedUser);
         }
         catch (err) {
@@ -116,9 +134,6 @@ let UsersController = class UsersController {
             });
         }
     }
-    assignRole(userId, roleId) {
-        return this.userService.assignRoleToUser(userId, roleId);
-    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -138,6 +153,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "replaceUser", null);
 __decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -171,6 +187,14 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, constants_1.Public)(),
+    (0, common_1.Patch)("update-all"),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateAllUser", null);
+__decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Post)("create-company/:userId"),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)("userId")),
@@ -188,15 +212,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, updateCompanyDto_1.UpdateCompanyDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateCompany", null);
-__decorate([
-    (0, constants_1.Public)(),
-    (0, common_1.Post)(":id/assign-role"),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)("roleId")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", void 0)
-], UsersController.prototype, "assignRole", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)("user"),
     (0, swagger_1.ApiTags)("users"),

@@ -15,11 +15,9 @@ const users_module_1 = require("./public/users/users.module");
 const loan_module_1 = require("./public/loans/loan.module");
 const search_module_1 = require("./search/search.module");
 const auth_module_1 = require("./auth/auth.module");
-const roles_module_1 = require("./user-roles/roles.module");
-const mapped_user_roles_module_1 = require("./mapped-user-roles/mapped-user-roles.module");
-const repayment_schedule_module_1 = require("./public/repayment-schedule/repayment-schedule.module");
 const documents_module_1 = require("./public/documents/documents.module");
 const schedule_1 = require("@nestjs/schedule");
+const company_module_1 = require("./public/companies/company.module");
 require("dotenv").config();
 const uri = process.env.DATABASE_URL;
 let AppModule = class AppModule {
@@ -32,12 +30,10 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             search_module_1.SearchModule,
             auth_module_1.AuthModule,
-            roles_module_1.RolesModule,
-            mapped_user_roles_module_1.MappedUserRoleModule,
-            repayment_schedule_module_1.RepaymentScheduleModule,
+            company_module_1.CompanyModule,
             documents_module_1.DocumentsModule,
             mongoose_1.MongooseModule.forRoot(uri),
-            schedule_1.ScheduleModule.forRoot()
+            schedule_1.ScheduleModule.forRoot(),
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -77,8 +77,11 @@ let LoanController = class LoanController {
                 loanData,
             });
         }
-        catch (err) {
-            return response.status(err.status).json(err.response);
+        catch (error) {
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: "Loan fetch failed",
+                error: error.message,
+            });
         }
     }
     async getLoanApplications(response, lenderId) {
@@ -125,6 +128,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "deleteLoan", null);
 __decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),

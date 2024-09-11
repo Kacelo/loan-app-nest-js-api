@@ -19,13 +19,14 @@ let UsersService = class UsersService {
         this.prisma = prisma;
     }
     async createUser(createUserDto) {
+        const { email, username, password, role } = createUserDto;
         try {
             console.log("using prisma");
-            const { email, username, password, userRole } = createUserDto;
             const hashedPassword = (0, bcrypt_1.encodePassword)(password);
             const existingUser = await this.prisma.user.findFirst({
                 where: {
                     email: email,
+                    username: username,
                 },
                 select: {
                     id: true,
@@ -36,16 +37,30 @@ let UsersService = class UsersService {
             }
             const user = await this.prisma.user.create({
                 data: {
-                    email: email,
-                    username: username,
+                    email,
+                    username,
+                    role,
                     password: hashedPassword,
-                    userRole: userRole || "BORROWER",
                 },
             });
+            if (role === "Borrower") {
+                const borrowers = await this.prisma.borrower.create({
+                    data: {
+                        userId: user.id,
+                    },
+                });
+            }
+            else if (role === "Lender") {
+                await this.prisma.lender.create({
+                    data: {
+                        userId: user.id,
+                    },
+                });
+            }
             return user;
         }
         catch (error) {
-            console.log('user create failed', error);
+            console.log("user create failed", error);
         }
     }
     async updateUser(id, updateUserDto) {
@@ -106,6 +121,7 @@ let UsersService = class UsersService {
     }
     async getAllUsers() {
         const user = await this.prisma.user.findMany();
+        console.log("user:", user);
         if (!user) {
             throw new common_1.NotFoundException("User not found");
         }
@@ -118,19 +134,56 @@ let UsersService = class UsersService {
             },
         });
     }
+    async updateAll() {
+        const user = await this.prisma.user.updateMany({
+            where: { createdAt: null },
+            data: { createdAt: new Date() },
+        });
+    }
+    async fetchUsersWithNullCreatedAt() {
+        const users = await this.prisma.user.findMany({
+            where: {
+                createdAt: null,
+            },
+        });
+        return users;
+    }
+    async updateUsersWithNullCreatedAt() {
+        const users = await this.fetchUsersWithNullCreatedAt();
+        for (const user of users) {
+            await this.prisma.user.update({
+                where: {
+                    id: user.id,
+                },
+                data: {
+                    createdAt: new Date(),
+                },
+            });
+        }
+        console.log("All users with null createdAt have been updated.");
+    }
     async createCompany(userId, createCompanyDto) {
         const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        if (!user) {
-            throw new common_1.NotFoundException("User not found");
+        try {
+            const existingLender = await this.prisma.lender.findFirst({
+                where: { userId },
+            });
+            if (existingLender && existingLender.companyId) {
+                throw new common_1.ConflictException("Lender is already associated with a company");
+            }
+            const company = await this.prisma.company.create({
+                data: createCompanyDto,
+            });
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { companyId: company.id },
+            });
+            return company;
         }
-        const company = await this.prisma.company.create({
-            data: createCompanyDto,
-        });
-        await this.prisma.user.update({
-            where: { id: userId },
-            data: { companyId: company.id },
-        });
-        return company;
+        catch (error) {
+            console.log("Company creation failed", error);
+            throw error;
+        }
     }
     async updateCompany(companyId, updateCompanyDto) {
         const company = await this.prisma.company.findUnique({
@@ -142,18 +195,6 @@ let UsersService = class UsersService {
         return await this.prisma.company.update({
             where: { id: companyId },
             data: updateCompanyDto,
-        });
-    }
-    async deleteCompany(id, deleted) {
-        const existingCompany = await this.prisma.company.findUnique({
-            where: { id },
-        });
-        if (!existingCompany) {
-            throw new common_1.NotFoundException("Loan not found");
-        }
-        return await this.prisma.company.update({
-            where: { id },
-            data: { deleted },
         });
     }
     async getAllLoans() {
@@ -168,24 +209,6 @@ let UsersService = class UsersService {
         return companies;
     }
     async searchCompany(name) { }
-    async assignRoleToUser(userId, roleId) {
-        const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        if (!user) {
-            throw new common_1.NotFoundException("user not found");
-        }
-        const role = await this.prisma.userRole.findUnique({
-            where: { id: roleId },
-        });
-        if (!role) {
-            throw new common_1.NotFoundException("Role not found");
-        }
-        return this.prisma.mappedUserRoles.create({
-            data: {
-                userId,
-                roleId,
-            },
-        });
-    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

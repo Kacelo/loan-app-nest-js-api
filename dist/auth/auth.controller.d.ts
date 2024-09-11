@@ -4,9 +4,7 @@ import { CreateUserDto } from "src/public/users/dto/createUser.dto";
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    signIn(signInDto: SignInDto): Promise<{
-        access_token: string;
-    }>;
+    signIn(signInDto: SignInDto, response: any): Promise<any>;
     getProfile(req: any): any;
     signUp(createUserDto: CreateUserDto, response: any): Promise<any>;
 }

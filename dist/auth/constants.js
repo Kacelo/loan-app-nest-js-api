@@ -6,6 +6,6 @@ exports.IS_PUBLIC_KEY = 'isPublic';
 const Public = () => (0, common_1.SetMetadata)(exports.IS_PUBLIC_KEY, true);
 exports.Public = Public;
 exports.jwtConstants = {
-    secret: 'secretValue',
+    secret: process.env.JWT_SECRET,
 };
 //# sourceMappingURL=constants.js.map
