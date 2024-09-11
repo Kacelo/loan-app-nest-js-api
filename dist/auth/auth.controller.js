@@ -43,6 +43,7 @@ let AuthController = class AuthController {
     }
     async signUp(createUserDto, response) {
         try {
+            console.log(createUserDto);
             const token = await this.authService.signUp(createUserDto);
             return response.status(common_1.HttpStatus.CREATED).json({
                 message: "User registered successfully",

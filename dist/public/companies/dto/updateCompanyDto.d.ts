@@ -6,5 +6,5 @@ export declare class UpdateCompanyDto {
     postalCode: string;
     phoneNumber: string;
     email: string;
-    regitstrationNumber: string;
+    registrationNumber: string;
 }

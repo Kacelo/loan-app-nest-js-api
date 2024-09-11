@@ -17,13 +17,15 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const { email, username, password, role } = createUserDto;
+
     try {
       console.log("using prisma");
-      const { email, username, password, companyId, role } = createUserDto;
       const hashedPassword = encodePassword(password);
       const existingUser = await this.prisma.user.findFirst({
         where: {
           email: email,
+          username: username,
         },
         select: {
           id: true,
@@ -33,18 +35,12 @@ export class UsersService {
       if (existingUser) {
         throw new ConflictException("User already exists");
       }
-      // if (role === 'Lender' && !companyId) {
-      //   throw new Error('Company ID is required for lenders.');
-      // }
-      console.log(createUserDto);
-
       // Step 2: Create the user
       const user = await this.prisma.user.create({
         data: {
           email,
           username,
           role,
-          companyId: role === "Lender" ? companyId : null,
           password: hashedPassword, // Only set companyId if the role is Lender
           // Add other necessary fields
         },
@@ -53,7 +49,6 @@ export class UsersService {
         const borrowers = await this.prisma.borrower.create({
           data: {
             userId: user.id,
-            // Additional borrower-specific fields
           },
         });
         // return borrowers
@@ -61,7 +56,7 @@ export class UsersService {
         await this.prisma.lender.create({
           data: {
             userId: user.id,
-            companyId: companyId,
+            companyId: user.companyId,
             // Additional lender-specific fields
           },
         });
@@ -177,20 +172,30 @@ export class UsersService {
   }
   async createCompany(userId: string, createCompanyDto: CreateCompanyDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      throw new NotFoundException("User not found");
+    try {
+      // Check if the user is already associated with a company
+      const existingLender = await this.prisma.lender.findFirst({
+        where: { userId },
+      });
+      if (existingLender && existingLender.companyId) {
+        throw new ConflictException("Lender is already associated with a company");
+      }
+      const company = await this.prisma.company.create({
+        data: createCompanyDto,
+      });
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { companyId: company.id },
+      });
+  
+      return company;
+    } catch (error) {
+      console.log("Company creation failed", error);
+      throw error;
     }
+    
 
-    const company = await this.prisma.company.create({
-      data: createCompanyDto,
-    });
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { companyId: company.id },
-    });
-
-    return company;
+   
   }
   async updateCompany(companyId: string, updateCompanyDto: UpdateCompanyDto) {
     const company = await this.prisma.company.findUnique({

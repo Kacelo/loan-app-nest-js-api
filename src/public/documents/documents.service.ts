@@ -25,9 +25,9 @@ export class DocumentsService {
     return document;
   }
 
-  async getDocumentsByLoanId(loanId: string) {
-    return this.prisma.document.findMany({
-      where: { loanId },
-    });
-  }
+  // async getDocumentsByLoanId(loanId: string) {
+  //   return this.prisma.document.findMany({
+  //     where: { loanId },
+  //   });
+  // }
 }

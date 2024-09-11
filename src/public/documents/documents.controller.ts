@@ -21,14 +21,14 @@ export class DocumentsController {
     return this.documentsService.createDocument(createDocumentDto);
   }
   @Public()
-  @Get("loan/:loanId")
-  async getDocumentsByLoanId(@Param("loanId") loanId: string) {
-    const documents = await this.documentsService.getDocumentsByLoanId(loanId);
-    if (!documents || documents.length === 0) {
-      throw new NotFoundException("No documents found for this loan");
-    }
-    return documents;
-  }
+  // @Get("loan/:loanId")
+  // async getDocumentsByLoanId(@Param("loanId") loanId: string) {
+  //   const documents = await this.documentsService.getDocumentsByLoanId(loanId);
+  //   if (!documents || documents.length === 0) {
+  //     throw new NotFoundException("No documents found for this loan");
+  //   }
+  //   return documents;
+  // }
   @Public()
   @Get()
   findAll() {

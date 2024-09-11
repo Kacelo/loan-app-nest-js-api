@@ -1,5 +1,5 @@
 import { CreateCompanyDto } from "./dto/createCompanyDto";
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Company, Lender } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
 
@@ -13,7 +13,7 @@ export class CompanyService {
       address,
       city,
       region,
-      regitstrationNumber,
+      registrationNumber,
       phoneNumber,
       postalCode,
     } = createCompanyDto;
@@ -45,9 +45,9 @@ export class CompanyService {
           address,
           city,
           region,
-          regitstrationNumber,
           phoneNumber,
           postalCode,
+          registrationNumber
         },
       });
       return newCompany;
@@ -83,5 +83,19 @@ export class CompanyService {
       console.log("Assigning user to company failed", error);
       throw error;
     }
+  }
+  async getCompanyByEmail(email: string) {
+    if (!email) {
+      throw new NotFoundException("User not found");
+    }
+    const company = await this.prisma.company.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (!company) {
+      throw new NotFoundException("User not found");
+    }
+    return company;
   }
 }

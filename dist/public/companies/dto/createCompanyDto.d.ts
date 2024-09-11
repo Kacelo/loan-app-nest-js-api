@@ -6,5 +6,5 @@ export declare class CreateCompanyDto {
     postalCode: string;
     phoneNumber: string;
     email: string;
-    regitstrationNumber: string;
+    registrationNumber: string;
 }

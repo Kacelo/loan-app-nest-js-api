@@ -25,7 +25,7 @@ let AuthService = class AuthService {
         console.log(user);
         const isMatch = await (0, bcrypt_1.decodePassword)(pword, user?.password);
         console.log(isMatch);
-        if (!isMatch) {
+        if (!user) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };

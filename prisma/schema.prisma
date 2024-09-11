@@ -28,12 +28,12 @@ model Loan {
 
 model Lender {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  companyId String   @db.ObjectId
+  companyId String?   @db.ObjectId
   userId    String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   loans     Loan[]   @relation
-  company   Company  @relation(fields: [companyId], references: [id])
+  company   Company?  @relation(fields: [companyId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 }
 
@@ -53,7 +53,7 @@ model Company {
   address             String
   city                String
   region              String
-  regitstrationNumber String
+  registrationNumber String
   phoneNumber         String
   email               String
   postalCode          String

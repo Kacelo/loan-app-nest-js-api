@@ -25,7 +25,7 @@ export class AuthService {
     // console.log("passwords", user?.password, hashedPassword)
     const isMatch = await decodePassword(pword, user?.password);
     console.log(isMatch)
-    if (!isMatch) {
+    if (!user) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.username };

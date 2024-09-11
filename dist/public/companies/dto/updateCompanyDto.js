@@ -53,5 +53,5 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], UpdateCompanyDto.prototype, "regitstrationNumber", void 0);
+], UpdateCompanyDto.prototype, "registrationNumber", void 0);
 //# sourceMappingURL=updateCompanyDto.js.map

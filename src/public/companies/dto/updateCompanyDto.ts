@@ -32,5 +32,5 @@ export class UpdateCompanyDto {
 
   @IsString()
   @IsOptional()
-  regitstrationNumber: string;
+  registrationNumber: string;
 }

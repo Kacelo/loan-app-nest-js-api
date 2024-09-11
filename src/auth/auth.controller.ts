@@ -49,6 +49,7 @@ export class AuthController {
   @Post("signup")
   async signUp(@Body() createUserDto: CreateUserDto, @Res() response) {
     try {
+      console.log(createUserDto)
       const token = await this.authService.signUp(createUserDto);
       return response.status(HttpStatus.CREATED).json({
         message: "User registered successfully",

@@ -45,7 +45,7 @@ export declare class UsersService {
         address: string;
         city: string;
         region: string;
-        regitstrationNumber: string;
+        registrationNumber: string;
         phoneNumber: string;
         email: string;
         postalCode: string;
@@ -58,7 +58,7 @@ export declare class UsersService {
         address: string;
         city: string;
         region: string;
-        regitstrationNumber: string;
+        registrationNumber: string;
         phoneNumber: string;
         email: string;
         postalCode: string;

@@ -32,5 +32,5 @@ export class CreateCompanyDto {
 
   @IsString()
   @IsOptional()
-  regitstrationNumber: string;
+  registrationNumber: string;
 }
