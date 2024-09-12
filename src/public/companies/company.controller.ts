@@ -39,11 +39,7 @@ export class CompanyController {
     console.log(newCompany);
     return newCompany;
   }
-    @Body() createCompanyDto: CreateCompanyDto
-  ): Promise<Company> {
-    return this.companyService.createCompany(createCompanyDto);
-  }
-
+ 
   @Get(":id")
   async getCompany(@Param("id") id: string): Promise<Company> {
     return this.companyService.getCompany(id);

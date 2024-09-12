@@ -54,6 +54,7 @@ let UsersService = class UsersService {
                 await this.prisma.lender.create({
                     data: {
                         userId: user.id,
+                        companyId: user.companyId,
                     },
                 });
             }

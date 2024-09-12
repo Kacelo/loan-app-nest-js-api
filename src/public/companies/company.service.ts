@@ -2,6 +2,7 @@ import { CreateCompanyDto } from "./dto/createCompanyDto";
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Company, Lender } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
+import { UpdateCompanyDto } from "./dto/updateCompanyDto";
 
 @Injectable()
 export class CompanyService {
@@ -85,6 +86,7 @@ export class CompanyService {
     }
   }
   async getCompanyByEmail(email: string) {
+    console.log(email)
     if (!email) {
       throw new NotFoundException("User not found");
     }
