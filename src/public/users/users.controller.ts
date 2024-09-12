@@ -29,7 +29,7 @@ export class UsersController {
 
   @Post()
   async signupUser(
-    @Body() userData: { username: string; email: string; password: string, role: string }
+    @Body() userData: { username: string; email: string; password: string, role: string, firstName: string, lastName:string }
   ): Promise<UserModel> {
     const password = encodePassword(userData.password);
     console.log("encoded password", password);

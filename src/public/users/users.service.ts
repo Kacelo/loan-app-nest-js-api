@@ -17,7 +17,8 @@ import { UpdateCompanyDto } from "../companies/dto/updateCompanyDto";
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, username, password, role } = createUserDto;
+    const { email, username, password, role, companyId, firstName, lastName } =
+      createUserDto;
 
     try {
       console.log("using prisma");
@@ -40,6 +41,8 @@ export class UsersService {
         data: {
           email,
           username,
+          firstName,
+          lastName,
           role,
           password: hashedPassword, // Only set companyId if the role is Lender
           // Add other necessary fields
@@ -56,7 +59,7 @@ export class UsersService {
         await this.prisma.lender.create({
           data: {
             userId: user.id,
-            companyId: user.companyId,
+            companyId: companyId,
             // Additional lender-specific fields
           },
         });
@@ -178,7 +181,9 @@ export class UsersService {
         where: { userId },
       });
       if (existingLender && existingLender.companyId) {
-        throw new ConflictException("Lender is already associated with a company");
+        throw new ConflictException(
+          "Lender is already associated with a company"
+        );
       }
       const company = await this.prisma.company.create({
         data: createCompanyDto,
@@ -187,15 +192,12 @@ export class UsersService {
         where: { id: userId },
         data: { companyId: company.id },
       });
-  
+
       return company;
     } catch (error) {
       console.log("Company creation failed", error);
       throw error;
     }
-    
-
-   
   }
   async updateCompany(companyId: string, updateCompanyDto: UpdateCompanyDto) {
     const company = await this.prisma.company.findUnique({
