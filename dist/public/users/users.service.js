@@ -19,7 +19,7 @@ let UsersService = class UsersService {
         this.prisma = prisma;
     }
     async createUser(createUserDto) {
-        const { email, username, password, role } = createUserDto;
+        const { email, username, password, role, companyId, firstName, lastName } = createUserDto;
         try {
             console.log("using prisma");
             const hashedPassword = (0, bcrypt_1.encodePassword)(password);
@@ -39,6 +39,8 @@ let UsersService = class UsersService {
                 data: {
                     email,
                     username,
+                    firstName,
+                    lastName,
                     role,
                     password: hashedPassword,
                 },
@@ -54,6 +56,7 @@ let UsersService = class UsersService {
                 await this.prisma.lender.create({
                     data: {
                         userId: user.id,
+                        companyId: companyId,
                     },
                 });
             }

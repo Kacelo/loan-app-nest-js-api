@@ -1,7 +1,8 @@
 import { CreateCompanyDto } from "./dto/createCompanyDto";
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { Company, Lender } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
+import { UpdateCompanyDto } from "./dto/updateCompanyDto";
 
 @Injectable()
 export class CompanyService {
@@ -17,27 +18,28 @@ export class CompanyService {
       phoneNumber,
       postalCode,
     } = createCompanyDto;
-
+  
     try {
+      // Check if company name already exists
       const existingCompanyName = await this.prisma.company.findFirst({
-        where: {
-          name: name,
-        },
-        select: {
-          id: true,
-        },
+        where: { name },
+        select: { id: true },
       });
+  
+      // Check if company email already exists
       const existingCompanyEmail = await this.prisma.company.findFirst({
-        where: {
-          email: email,
-        },
-        select: {
-          id: true,
-        },
+        where: { email },
+        select: { id: true },
       });
+  
+      // If either name or email already exists, throw ConflictException
       if (existingCompanyName || existingCompanyEmail) {
-        throw new ConflictException("Company already exists");
+        throw new ConflictException(
+          `Company with the same ${existingCompanyName ? 'name' : 'email'} already exists`
+        );
       }
+  
+      // Create the new company
       const newCompany = await this.prisma.company.create({
         data: {
           name,
@@ -47,12 +49,18 @@ export class CompanyService {
           region,
           phoneNumber,
           postalCode,
-          registrationNumber
+          registrationNumber,
         },
       });
+  
       return newCompany;
     } catch (error) {
-      console.log("Error creating company", error);
+      if (error instanceof ConflictException) {
+        throw error;
+      } else {
+        console.error('Error creating company:', error);
+        throw new InternalServerErrorException('Failed to create company. Please try again.');
+      }
     }
   }
 
@@ -85,6 +93,7 @@ export class CompanyService {
     }
   }
   async getCompanyByEmail(email: string) {
+    console.log(email)
     if (!email) {
       throw new NotFoundException("User not found");
     }

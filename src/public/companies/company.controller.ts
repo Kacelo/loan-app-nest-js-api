@@ -1,5 +1,5 @@
 // company.controller.ts
-import { Controller, Post, Body, Get, Param, Patch } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Patch, HttpException, HttpStatus } from "@nestjs/common";
 import { CompanyService } from "./company.service";
 import { Company } from "@prisma/client";
 import { CreateCompanyDto } from "./dto/createCompanyDto";
@@ -26,9 +26,14 @@ export class CompanyController {
       postalCode: string;
     }
   ): Promise<Company> {
-    const newCompany = await this.companyService.createCompany(companyData);
-    console.log(newCompany);
-    return newCompany;
+    try {
+      const newCompany = await this.companyService.createCompany(companyData);
+      console.log(`Company created: ${newCompany.id}`);
+      return newCompany;
+    } catch (error) {
+      console.error('Error creating company', error);
+      throw new HttpException('Failed to create company', HttpStatus.BAD_REQUEST);
+    }
   }
   @Public()
   @Post("/find")
@@ -39,11 +44,7 @@ export class CompanyController {
     console.log(newCompany);
     return newCompany;
   }
-    @Body() createCompanyDto: CreateCompanyDto
-  ): Promise<Company> {
-    return this.companyService.createCompany(createCompanyDto);
-  }
-
+ 
   @Get(":id")
   async getCompany(@Param("id") id: string): Promise<Company> {
     return this.companyService.getCompany(id);

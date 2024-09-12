@@ -11,6 +11,8 @@ export declare class UsersController {
         email: string;
         password: string;
         role: string;
+        firstName: string;
+        lastName: string;
     }): Promise<UserModel>;
     replaceUser(response: any, id: string, updateUserDto: UpdateUserDto): Promise<any>;
     getAllUsers(response: any): Promise<any>;
