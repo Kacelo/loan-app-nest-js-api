@@ -18,7 +18,7 @@ export class CreateLoanDto {
 
   @IsString()
   @IsOptional()
-  amount: GLfloat;
+  amount: number;
 
   @IsString()
   @IsOptional()
@@ -36,13 +36,9 @@ export class CreateLoanDto {
   @IsOptional()
   status: string;
 
-  @IsString()
-  @IsOptional()
-  collateral?: string;
-
   @IsNumber()
   @IsOptional()
-  latePaymentPenalty: number;
+  totalRepayment?: number;
 
   @IsString()
   @IsOptional()
