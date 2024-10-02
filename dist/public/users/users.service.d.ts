@@ -74,8 +74,7 @@ export declare class UsersService {
         startDate: Date;
         endDate: Date;
         status: string;
-        collateral: string;
-        latePaymentPenalty: number;
+        totalRepayment: number;
         comments: string;
         createdAt: Date;
         updatedAt: Date;

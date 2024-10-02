@@ -13,8 +13,7 @@ export declare class LoanService {
         startDate: Date;
         endDate: Date;
         status: string;
-        collateral: string;
-        latePaymentPenalty: number;
+        totalRepayment: number;
         comments: string;
         createdAt: Date;
         updatedAt: Date;
@@ -29,8 +28,7 @@ export declare class LoanService {
         startDate: Date;
         endDate: Date;
         status: string;
-        collateral: string;
-        latePaymentPenalty: number;
+        totalRepayment: number;
         comments: string;
         createdAt: Date;
         updatedAt: Date;
@@ -45,8 +43,7 @@ export declare class LoanService {
         startDate: Date;
         endDate: Date;
         status: string;
-        collateral: string;
-        latePaymentPenalty: number;
+        totalRepayment: number;
         comments: string;
         createdAt: Date;
         updatedAt: Date;
@@ -61,8 +58,7 @@ export declare class LoanService {
         startDate: Date;
         endDate: Date;
         status: string;
-        collateral: string;
-        latePaymentPenalty: number;
+        totalRepayment: number;
         comments: string;
         createdAt: Date;
         updatedAt: Date;
