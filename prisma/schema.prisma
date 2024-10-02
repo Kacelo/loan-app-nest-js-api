@@ -16,8 +16,7 @@ model Loan {
   startDate          DateTime
   endDate            DateTime
   status             String // e.g., 'pending', 'approved', 'repaid', 'defaulted'
-  collateral         String?
-  latePaymentPenalty Float?
+  totalRepayment     Float   // New field to store total repayment amount
   comments           String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -25,6 +24,7 @@ model Loan {
   lender             Lender   @relation(fields: [lenderId], references: [id])
   borrower           Borrower @relation(fields: [borrowerId], references: [id])
 }
+
 
 model Lender {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId

@@ -50,15 +50,10 @@ __decorate([
     __metadata("design:type", String)
 ], CreateLoanDto.prototype, "status", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateLoanDto.prototype, "collateral", void 0);
-__decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
-], CreateLoanDto.prototype, "latePaymentPenalty", void 0);
+], CreateLoanDto.prototype, "totalRepayment", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
