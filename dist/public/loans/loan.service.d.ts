@@ -34,6 +34,21 @@ export declare class LoanService {
         updatedAt: Date;
         deleted: boolean;
     }>;
+    getLoanByUser(id: string): Promise<{
+        id: string;
+        lenderId: string;
+        borrowerId: string;
+        amount: number;
+        interestRate: number;
+        startDate: Date;
+        endDate: Date;
+        status: string;
+        totalRepayment: number;
+        comments: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deleted: boolean;
+    }[]>;
     deleteLoan(id: string): Promise<{
         id: string;
         lenderId: string;

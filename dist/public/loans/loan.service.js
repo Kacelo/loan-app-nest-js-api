@@ -45,6 +45,13 @@ let LoanService = class LoanService {
             data: updateLoanDto,
         });
     }
+    async getLoanByUser(id) {
+        const userLoans = await this.prisma.loan.findMany({ where: { lenderId: id } });
+        if (!userLoans) {
+            throw new common_1.NotFoundException("User not found");
+        }
+        return userLoans;
+    }
     async deleteLoan(id) {
         const existingLoan = await this.prisma.loan.findUnique({
             where: { id },

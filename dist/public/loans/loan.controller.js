@@ -136,6 +136,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LoanController.prototype, "getLoans", null);
 __decorate([
+    (0, constants_1.Public)(),
     (0, common_1.Get)("applications/:lenderId"),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)("lenderId")),
