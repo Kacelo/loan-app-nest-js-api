@@ -32,6 +32,12 @@ let loanController = class loanController {
             return response.status(error.status).json(error.response);
         }
     }
+    async getLenderLoans(response, id) {
+        try {
+        }
+        catch (error) {
+        }
+    }
     async createLoan(response, createLoanDto) {
         try {
             const newLoan = await this.loanService.createLoan(createLoanDto);
@@ -88,6 +94,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], loanController.prototype, "getAllLoans", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], loanController.prototype, "getLenderLoans", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Res)()),

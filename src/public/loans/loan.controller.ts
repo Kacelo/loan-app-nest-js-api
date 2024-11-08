@@ -92,6 +92,7 @@ export class LoanController {
         error: error.message,
       });    }
   }
+  @Public()
   @Get("applications/:lenderId")
   async getLoanApplications(
     @Res() response,
